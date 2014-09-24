@@ -8,7 +8,9 @@ typedef int bool;
 #define FALSE !TRUE
 
 void* value(lexer* lx);
-void* word(lexer* lx);
+token* word(lexer* lx);
+token* number(lexer* lx);
+char* digit(lexer* lx);
 
 lexer* create_lexer() {
     lexer* lx = malloc(sizeof(*lx));
@@ -16,7 +18,7 @@ lexer* create_lexer() {
     lx->token_callback = NULL;
 
     lx->text = calloc(1024, sizeof(char*));
-    lx->ch = NULL;
+    lx->ch = '\0';
     lx->at = 0;
     lx->len = 0;
     lx->depth = 0;
@@ -24,21 +26,34 @@ lexer* create_lexer() {
     return lx;
 }
 
+token* create_token() {
+    token* tk = malloc(sizeof(*tk));
+
+    tk->contents = "";
+    tk->type = 0;
+
+    return tk;
+}
+
+
 void* lexer_feedline(lexer* lx, char* line) {
     // FIXME: only short comments removed
-    // reg = re.compile('--.*$', re.M)
-//    text = reg.sub('', text, 0)
     lx->text = line;
     lx->at = 0;
-    lx->ch = NULL;
+    lx->ch = '\0';
     lx->depth = 0;
     lx->len = strlen(lx->text);
     next_chr(lx);
-    return value(lx);
+
+    while (TRUE) {
+        token* tk = value(lx);
+        if (tk == NULL) break;
+        lx->token_callback(tk, lx);
+    }
 }
 
 void white(lexer* lx) {
-    while (lx->ch != NULL) {
+    while (lx->ch != '\0') {
         if (isspace(lx->ch)) {
             next_chr(lx);
         } else {
@@ -49,12 +64,11 @@ void white(lexer* lx) {
 
 int next_chr(lexer* lx) {
     if (lx->at >= lx->len) {
-        lx->ch = NULL;
+        lx->ch = '\0';
         return FALSE;
     }
 
     lx->ch = lx->text[lx->at];
-    lx->ch[1] = 
     lx->at++;
     return TRUE;
 }
@@ -62,24 +76,26 @@ int next_chr(lexer* lx) {
 
 void* value(lexer* lx) {
     white(lx);
-    if (lx->ch == NULL) {
+    if (lx->ch == '\0') {
         return NULL;
     }
 
-    if (strcmp(lx->ch, "{") == 0) {
+    /*
+    if (lx->ch == '{') {
 //        return object(lx);
     }
 
-    if (strcmp(lx->ch, "[") == 0) {
+    if (lx->ch, "[") == 0) {
         next_chr(lx);
-    }
+    }*/
+
 
 /*    if (lx->ch in ['"',  "'",  '[']) {
         return string(lx, lx->ch);
     }*/
 
-    if (isdigit(lx->ch) || (strcmp(lx->ch, "-") == 0)) {
-//        return number(lx);
+    if (isdigit(lx->ch) || lx->ch == '-') {
+        return number(lx);
     }
 
     return word(lx);
@@ -159,77 +175,58 @@ def object(self):
                     idx += 1
                     k = ''
     print ERRORS['unexp_end_table'] #Bad exit here
+
 */
+token* word(lexer* lx) {
+    char* s = calloc(20, sizeof(char*));
+    int idx = 0;
 
-void* word(lexer* lx) {
-    char* s = "";
-
-    if (strcmp(lx->ch, "\n") != 0) {
-        s = lx->ch;
+    if (lx->ch != '\n') {
+        s[idx++] = lx->ch;
     }
 
     while (next_chr(lx)) {
+        //printf("%c", lx->ch);
         if (isalnum(lx->ch)) {
-            strcat(s, lx->ch);
+            s[idx++] = lx->ch;
         } else {
-                   if (strcmp(s, "true") == 0) {
+            if (strcmp(s, "true") == 0) {
                 return TRUE;
             } else if (strcmp(s, "false") == 0) {
                 return FALSE;
             }
-/*                    else if s == 'nil':
-                return NULL;
-            }*/
-            return s;
+
+            token* tk = create_token();
+            tk->contents = s;
+            tk->type = IDENTIFIER;
+            return tk;
         }
     }
 }
 
 
+token* number(lexer* lx) {
+    token* tk = create_token();
+
+    tk->contents = digit(lx);
+    tk->type = INTEGER;
+
+    return tk;
+}
+
+char* digit(lexer* lx) {
+    char* n = calloc(20, sizeof(char*));
+    int idx = 0;
+
+    while (lx->ch != '\0' && isdigit(lx->ch)) {
+        n[idx] = lx->ch;
+        next_chr(lx);
+    }
+
+    return n;
+}
+
 /*
-void* number(lexer* lx):
-    def next_digit(err):
-        n = self.ch
-        self.next_chr()
-        if not self.ch or not self.ch.isdigit():
-            raise ParseError(err)
-        return n
-    n = ''
-    try:
-        if self.ch == '-':
-            n += next_digit(ERRORS['mfnumber_minus'])
-        n += self.digit()
-        if n == '0' and self.ch in ['x', 'X']:
-            n += self.ch
-            self.next_chr()
-            n += self.hex()
-        else:
-            if self.ch and self.ch == '.':
-                n += next_digit(ERRORS['mfnumber_dec_point'])
-                n += self.digit()
-            if self.ch and self.ch in ['e', 'E']:
-                n += self.ch
-                self.next_chr()
-                if not self.ch or self.ch not in ('+', '-'):
-                    raise ParseError(ERRORS['mfnumber_sci'])
-                n += next_digit(ERRORS['mfnumber_sci'])
-                n += self.digit()
-    except ParseError as e:
-        print e
-        return 0
-    try:
-        return int(n, 0)
-    except:
-        pass
-    return float(n)
-
-def digit(self):
-    n = ''
-    while self.ch and self.ch.isdigit():
-        n += self.ch
-        self.next_chr()
-    return n
-
 def hex(self):
     n = ''
     while self.ch and \
