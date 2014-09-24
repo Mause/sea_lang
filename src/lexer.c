@@ -190,22 +190,17 @@ token* word(lexer* lx) {
     }
 
     while (next_chr(lx)) {
-        //printf("%c", lx->ch);
         if (isalnum(lx->ch)) {
             s[idx++] = lx->ch;
         } else {
-            if (strcmp(s, "true") == 0) {
-                return TRUE;
-            } else if (strcmp(s, "false") == 0) {
-                return FALSE;
-            }
-
-            token* tk = create_token();
-            tk->contents = s;
-            tk->type = IDENTIFIER;
-            return tk;
+            break;
         }
     }
+
+    token* tk = create_token();
+    tk->contents = s;
+    tk->type = IDENTIFIER;
+    return tk;
 }
 
 
