@@ -23,6 +23,10 @@ lexer* create_lexer() {
     return lx;
 }
 
+void free_lexer(lexer* lx) {
+    free(lx);
+}
+
 token* create_token() {
     token* tk = malloc(sizeof(*tk));
 
@@ -32,6 +36,10 @@ token* create_token() {
     return tk;
 }
 
+void free_token(token* tk) {
+    free(tk->contents);
+    free(tk);
+}
 
 void* lexer_feedline(lexer* lx, char* line) {
     // FIXME: only short comments removed

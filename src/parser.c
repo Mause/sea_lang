@@ -10,3 +10,8 @@ parser* create_parser() {
     return ps;
 }
 
+
+void free_parser(parser* ps) {
+    free_lexer(ps->lx);
+    free(ps);
+}

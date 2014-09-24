@@ -31,6 +31,8 @@ int token_callback(token* tk, lexer* lx) {
 
     printf("Token: \"%s\" of type %s\n", tk->contents, repr(tk->type));
 
+    free_token(tk);
+
     return 0;
 }
 

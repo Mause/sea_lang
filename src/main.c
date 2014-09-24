@@ -25,6 +25,7 @@ int main(int argc, char* argv[]) {
 
     sea* s = create_sea();
     execute_file(s, input_file);
+    free_sea(s);
 
     if (!is_stdin) {
         if (ferror(input_file)) {
