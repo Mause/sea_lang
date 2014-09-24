@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 #include "src/execute.h"
+#include "src/sea.h"
 
 int main(int argc, char* argv[]) {
     if (argc < 2) {
@@ -22,7 +23,8 @@ int main(int argc, char* argv[]) {
         return -1;
     }
 
-    execute_file(input_file);
+    sea* s = create_sea();
+    execute_file(s, input_file);
 
     if (!is_stdin) {
         if (ferror(input_file)) {

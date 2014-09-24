@@ -3,6 +3,8 @@
 
 #include <stdio.h>
 
-int execute_file(FILE* file);
+#include "src/sea.h"
+
+int execute_file(sea* s, FILE* file);
 
 #endif

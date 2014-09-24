@@ -14,7 +14,7 @@ lexer* create_lexer() {
 
     lx->token_callback = NULL;
 
-    lx->text = calloc(1024, sizeof(char*));
+    lx->text = NULL;
     lx->ch = '\0';
     lx->at = 0;
     lx->len = 0;

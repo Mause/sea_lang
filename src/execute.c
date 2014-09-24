@@ -1,5 +1,6 @@
 #include "src/execute.h"
 #include "src/lexer.h"
+#include "src/parser.h"
 #include "src/bool.h"
 
 char* repr(int type) {
@@ -34,14 +35,12 @@ int token_callback(token* tk, lexer* lx) {
 }
 
 
-int execute_file(FILE* file) {
-    lexer* lx = create_lexer();
-
-    lx->token_callback = token_callback;
+int execute_file(sea* s, FILE* file) {
+    s->ps->lx->token_callback = token_callback;
 
     char buffer[1024];
     while (fgets(buffer, 1024, file) != NULL) {
-        lexer_feedline(lx, buffer);
+        lexer_feedline(s->ps->lx, buffer);
     }
 
     return 0;
