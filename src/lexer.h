@@ -2,7 +2,7 @@
 #define LEXER_H
 
 enum token_type {
-    IDENTIFIER, INTEGER
+    IDENTIFIER, INTEGER, STATEMENT
 };
 
 typedef struct {

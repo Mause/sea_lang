@@ -2,10 +2,7 @@
 #include <string.h>
 
 #include "src/lexer.h"
-
-typedef int bool;
-#define TRUE 1
-#define FALSE !TRUE
+#include "src/bool.h"
 
 void* value(lexer* lx);
 token* word(lexer* lx);
