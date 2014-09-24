@@ -1,21 +1,41 @@
 CC = gcc
+CFLAGS = -g -I src -I .
 
 all: build/main
 
-build/lexer.o: src/lexer.h src/lexer.c
-	$(CC) -g src/lexer.c -c -o build/lexer.o
-
 
 build/parser.o: src/parser.h src/parser.c
-	$(CC) -g src/parser.c -c -o build/parser.o
+	$(CC) $(CFLAGS) src/parser.c -c -o build/parser.o
 
 
-build/execute.o: src/execute.h src/execute.c
-	$(CC) -g src/execute.c -c -o build/execute.o	
+build/flex_parser.o: src/flex_parser.l build/grammar.o
+	flex --outfile=build/flex_parser.c src/flex_parser.l
+	$(CC) $(CFLAGS) build/flex_parser.c -c -o build/flex_parser.o
 
 
-build/main: build/lexer.o build/parser.o build/execute.o src/main.c
-	$(CC) -g src/main.c build/lexer.o build/parser.o build/execute.o -o build/main
+build/grammar.o: src/grammar.y
+	yacc --verbose --debug -d src/grammar.y -o build/grammar.c
+	$(CC) $(CFLAGS) build/grammar.c -c -o build/grammar.o
+
+
+build/sea.o: src/sea.h src/sea.c
+	$(CC) $(CFLAGS) src/sea.c -c -o build/sea.o
+
+
+SRC = build/grammar.o \
+	  build/flex_parser.o \
+	  build/parser.o \
+	  build/sea.o \
+	  src/main.c
+
+
+build/main: $(SRC)
+	$(CC) $(CFLAGS) $(SRC) -o build/main
 
 clean:
-	rm -f build/lexer.o build/parser.o build/execute.o build/main
+	rm -f \
+		build/parser.o \
+		build/sea.o \
+		build/main \
+		build/flex_parser.c \
+		build/flex_parser.o
