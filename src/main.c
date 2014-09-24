@@ -1,6 +1,5 @@
 #include <stdio.h>
 
-#include "src/execute.h"
 #include "src/sea.h"
 
 int main(int argc, char* argv[]) {
