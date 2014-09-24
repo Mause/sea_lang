@@ -7,9 +7,9 @@ char* repr(int type) {
     switch(type) {
         case IDENTIFIER: return "IDENTIFIER";
         case INTEGER   : return "INTEGER";
-        case STATEMENT : return "STATEMENT"; 
+        case STATEMENT : return "STATEMENT";
     }
-    
+
     return "UNKNOWN";
 }
 

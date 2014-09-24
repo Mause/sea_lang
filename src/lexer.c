@@ -42,7 +42,6 @@ void free_token(token* tk) {
 }
 
 void* lexer_feedline(lexer* lx, char* line) {
-    // FIXME: only short comments removed
     lx->text = line;
     lx->at = 0;
     lx->ch = '\0';
