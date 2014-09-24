@@ -1,0 +1,3 @@
+func name() {
+    var world = 0;
+}
