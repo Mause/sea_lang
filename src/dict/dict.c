@@ -141,8 +141,12 @@ static void resize(dict* d, int size) {
     d->max_size = size;
 
     for (i=0; i<original_length; i++) {
-        if (old_table[i] != NULL && old_table[i]->state == IN_USE) {
-            put_entry(d, old_table[i]);
+        if (old_table[i] != NULL) {
+            if (old_table[i]->state == IN_USE) {
+                put_entry(d, old_table[i]);
+            } else {
+                free(old_table[i]);
+            }
         }
     }
 
