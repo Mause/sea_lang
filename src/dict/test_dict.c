@@ -14,7 +14,7 @@ int testBasic() {
         "Hello"
     ) == 0;
 
-    // dict_free(table);
+    dict_free(table);
 
     return res;
 }
@@ -26,7 +26,11 @@ int testRemoveValue() {
 
     dict_remove(table, "World");
 
-    return dict_get(table, "World") == NULL;
+    bool res = dict_get(table, "World") == NULL;
+
+    dict_free(table);
+
+    return res;
 }
 
 int testResizeLarger() {
@@ -36,7 +40,11 @@ int testResizeLarger() {
     dict_set(table, "Worle", "Hello");
 
     // "the bucket number should have increased since the table was initialized",
-    return table->max_size > 3;
+    bool res = table->max_size > 3;
+
+    dict_free(table);
+
+    return res;
 }
 
 int testResizeSmaller() {
@@ -45,7 +53,11 @@ int testResizeSmaller() {
     dict_set(table, "Hello", "World");
 
     // "the bucket number should have decreased since the table was initialized",
-    return table->max_size < 7;
+    bool res = table->max_size < 7;
+
+    dict_free(table);
+
+    return res;
 }
 
 int testContainsKey() {
@@ -63,7 +75,11 @@ int testContainsKey() {
     dict_remove(table, "world");
 
     // "hashtable shouldn't contain a key that has been removed",
-    return res && (!contains_key(table, "world"));
+    res = res && (!contains_key(table, "world"));
+
+    dict_free(table);
+
+    return res;
 }
 
 #define test(func, name) \

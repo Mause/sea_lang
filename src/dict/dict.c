@@ -69,6 +69,7 @@ void* dict_remove(dict* d, char* key) {
 
 void dict_free(dict* d) {
     dict_free_entries(d->entries, d->max_size);
+    free(d->entries);
     free(d);
 }
 
@@ -145,7 +146,7 @@ static void resize(dict* d, int size) {
         }
     }
 
-    // dict_free_entries(old_table, original_count);
+    free(old_table);
 
     assert(d->count == original_count);
 }
