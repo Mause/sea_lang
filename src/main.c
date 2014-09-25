@@ -22,6 +22,13 @@ int main(int argc, char* argv[]) {
         return -1;
     }
 
+    if (argc > 2) {
+        if (strcmp(argv[2], "-d") == 0) {
+            extern int yydebug;
+            yydebug = 1;
+        }
+    }
+
     sea* s = create_sea();
     execute_file(s, input_file);
     free_sea(s);
