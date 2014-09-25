@@ -139,6 +139,8 @@ static void resize(dict* d, int size) {
     d->count = 0;
 
     d->entries = calloc(size, sizeof(**d->entries));
+    d->max_size = size;
+
 
     for (i=0; i<(original_length); i++) {
         // printf("%d of %d\n", i, original_length-1);
