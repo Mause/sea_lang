@@ -45,7 +45,6 @@ static void put_entry(dict* d, dict_entry* entry) {
     entry->state = IN_USE;
     int idx = find(d, entry->key);
     d->entries[idx] = entry;
-    printf("%s at %d/%d\n", entry->key, idx, d->max_size-1);
 }
 
 void* dict_get(dict* d, char* key) {
@@ -76,7 +75,7 @@ void dict_free(dict* d) {
 static void dict_free_entries(dict_entry** entries, int num) {
     int i;
 
-    for (i=0; i<(num-1); i++) {
+    for (i=0; i<num; i++) {
         if (entries[i] != NULL) {
             free(entries[i]);
         }
@@ -130,7 +129,6 @@ bool contains_key(dict* d, char* key) {
 }
 
 static void resize(dict* d, int size) {
-    // printf("\nResizing...\n");
     dict_entry** old_table = d->entries;
 
     int original_count = d->count,
@@ -141,16 +139,10 @@ static void resize(dict* d, int size) {
     d->entries = calloc(size, sizeof(**d->entries));
     d->max_size = size;
 
-
-    for (i=0; i<(original_length); i++) {
-        // printf("%d of %d\n", i, original_length-1);
+    for (i=0; i<original_length; i++) {
         if (old_table[i] != NULL && old_table[i]->state == IN_USE) {
             put_entry(d, old_table[i]);
         }
-    }
-
-    if (d->count != original_count) {
-        printf("%d != %d\n", d->count, original_count);
     }
 
     // dict_free_entries(old_table, original_count);
@@ -193,7 +185,6 @@ static void resizeIfNeeded(dict* d) {
 
     if (new_size != d->max_size) {
         if (new_size < d->count) {
-            // printf("Can't afford to shrink\n");
         } else {
             resize(d, new_size);
         }
@@ -208,11 +199,9 @@ static double percentageFull(dict* d) {
 }
 
 static bool overFull(dict* d) {
-    // printf("%f half full?\n", percentageFull(d));
     return percentageFull(d) > GLASS_HALF_FULL;
 }
 
 static bool underFull(dict* d) {
-    // printf("%f half empty?\n", percentageFull(d));
     return percentageFull(d) < GLASS_HALF_EMPTY;
 }
