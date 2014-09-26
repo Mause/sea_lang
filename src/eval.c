@@ -45,7 +45,7 @@ int run_function(ASTNode* func, ASTNode* program, callstack* cs) {
     assert(func->type == NODE_FUNCTION);
 
     stack_frame* cur_frame = stack_push(cs);
-    int pc;
+    int pc = 0;
 
     many_nodes* body = func->func->body;
     assert(body);

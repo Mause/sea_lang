@@ -37,7 +37,7 @@ stack_frame* stack_push(callstack* cs) {
     if (cs->top == NULL) {
         cs->top = calloc(1, sizeof(*cs->top));
     } else {
-        stack_frame* old_top;
+        stack_frame* old_top = cs->top;
         cs->top = calloc(1, sizeof(*cs->top));
         cs->top->next = old_top;
         old_top->previous = cs->top;
