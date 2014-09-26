@@ -42,7 +42,12 @@ build/dict.o: src/dict/dict.h src/dict/dict.c build/dict_entry.o build/primes.o
 	$(CC) $(CFLAGS) src/dict/dict.c -c -o build/dict.o
 
 
+build/grammar_handlers.o: src/grammar_handlers.h src/grammar_handlers.c
+	$(CC) $(CFLAGS) src/grammar_handlers.c -c -o build/grammar_handlers.o
+
+
 SRC = build/grammar.o \
+	  build/grammar_handlers.o \
 	  build/flex_parser.o \
 	  build/dict_entry.o \
 	  build/primes.o \

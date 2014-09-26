@@ -5,11 +5,12 @@
 #include <assert.h>
 
 #include "src/ast/ast.h"
+#include "src/grammar_handlers.h"
 
 #define YYDEBUG 1
 
 void yyerror(const char *str) {
-    fprintf(stderr,"error: %s\n",str);
+    fprintf(stderr, "error: %s\n", str);
 }
 
 int yywrap() {
@@ -27,7 +28,6 @@ ASTNode* res;
 %union {
     char* string;
     struct argument_list* arguments;
-//    char** string_list;
     struct ASTNode_t* node;
 }
 
@@ -62,12 +62,7 @@ ASTNode* res;
 
 %%
 start_bits: {
-                printf("building first\n");
-                res = create_ast_node();
-                res->type = NODE_MANYNODES;
-                res->nodes = calloc(1, sizeof(*$$->nodes));
-                res->nodes->num_nodes = 0;
-                res->nodes->nodes = NULL;
+                res = create_empty_manynodes();
             }
           | start_bits start {
               ASTNode* new = create_ast_node();
@@ -82,8 +77,6 @@ start_bits: {
               }
               new->nodes->nodes[new->nodes->num_nodes-1] = $2;
               res = new;
-
-              printf("should append\n");
           };
 
 start: function
@@ -91,16 +84,7 @@ start: function
      | import;
 
 function: FUNC IDENTIFIER OPEN_BRACE argument_declarations CLOSE_BRACE curly_scope {
-    $$ = create_ast_node();
-    $$->type = NODE_FUNCTION;
-    $$->func = malloc(sizeof(*$$->func));
-    $$->func->name = $2;
-    $$->func->args = $4;
-    $$->func->body = malloc(sizeof(*$$->func->body));
-    $$->func->body->nodes = $6->nodes->nodes;
-    $$->func->body->num_nodes = $6->nodes->num_nodes;
-
-    printf("func %s() {}\n", $2);
+    $$ = create_function($2, $4, $6->nodes);
 };
 
 argument_declarations: {
@@ -123,27 +107,8 @@ argument_declaration: IDENTIFIER COMMA {$$ = $1;}
 curly_scope: OPEN_CURLY body CLOSE_CURLY {$$ = $2;};
 body: statements;
 
-statements:  {
-                 $$ = create_ast_node();
-                 $$->type = NODE_MANYNODES;
-                 $$->nodes = calloc(1, sizeof(*$$->nodes));
-                 $$->nodes->num_nodes = 0;
-                 $$->nodes->nodes = NULL;
-             }
-          | statements statement {
-              $$ = create_ast_node();
-              $$->type = NODE_MANYNODES;
-              $$->nodes = calloc(1, sizeof(*$$->nodes));
-
-              $$->nodes->num_nodes = $1->nodes->num_nodes + 1;
-              $$->nodes->nodes = calloc($$->nodes->num_nodes, sizeof(*$$->nodes->nodes));
-
-              int i;
-              for (i=0; i<($$->nodes->num_nodes-1); i++) {
-                $$->nodes->nodes[i] = $1->nodes->nodes[i];
-              }
-              $$->nodes->nodes[$$->nodes->num_nodes-1] = $2;
-          };
+statements:                      { $$ = create_empty_manynodes(); }
+          | statements statement { $$ = append_to_manynodes($1, $2); };
 
 statement: assignment SEMICOLON
          | declaration SEMICOLON
@@ -151,38 +116,13 @@ statement: assignment SEMICOLON
          | expression SEMICOLON;
 
 assignment: IDENTIFIER EQUALS expression {
-    $$ = create_ast_node();
-    $$->type = NODE_ASSIGNMENT;
-    $$->assign = malloc(sizeof(*$$->assign));
-    $$->assign->ident = strdup($1);
-    $$->assign->expr = $3;
+    $$ = create_assignment($1, $3);
 };
 
-declaration: VAR assignment {
-                $$ = create_ast_node();
-                $$->type = NODE_DECLARATION;
-                $$->declare = calloc(1, sizeof(*$$->declare));
-                $$->declare->ident = $2->assign->ident;
-                $$->declare->expr = $2->assign->expr;
+declaration: VAR assignment { $$ = create_declaration_from_assignment($2); }
+           | VAR IDENTIFIER { $$ = create_declaration($2); };
 
-//                free_ast($2);
-           }
-           | VAR IDENTIFIER {
-                $$ = create_ast_node();
-                $$->type = NODE_DECLARATION;
-                $$->declare = calloc(1, sizeof(*$$->declare));
-                $$->declare->ident = strdup($2);
-                $$->declare->expr = NULL;
-
-//                free_ast($2);
-           };
-
-import: IMPORT IDENTIFIER SEMICOLON {
-    $$ = create_ast_node();
-    $$->type = NODE_IMPORT;
-    $$->string = $2;
-    printf("Import %s\n", $2);
-};
+import: IMPORT IDENTIFIER SEMICOLON { $$ = create_import($2); };
 
 
 forloop: FOR IDENTIFIER IN expression OPEN_CURLY body CLOSE_CURLY {
@@ -219,13 +159,9 @@ expression: IDENTIFIER {
 
 //string: QUOTE WHATEVER QUOTE { $$ = $2; };
 
-function_call: IDENTIFIER OPEN_BRACE arguments CLOSE_BRACE {
-    $$ = create_ast_node();
-    $$->type = NODE_FUNCTION_CALL;
-    $$->call = calloc(1, sizeof(*$$->call));
-    $$->call->function = NULL;
-    $$->call->arguments = NULL;
-    printf("%s()\n", $1);
+//function_call: IDENTIFIER OPEN_BRACE arguments CLOSE_BRACE {
+function_call: expression OPEN_BRACE arguments CLOSE_BRACE {
+    $$ = create_function_call($1, $3);
 };
 
 //comment: HASH WHATEVER NEWLINE;
