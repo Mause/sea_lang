@@ -61,15 +61,16 @@ void free_declaration(ASTNode* ast) {
 
 void free_ast(ASTNode* ast) {
     switch (ast->type) {
-        case NODE_FORLOOP:       free_forloop(ast);
-        case NODE_ASSIGNMENT:    free_assignment(ast);
-        case NODE_MANYNODES:     free_manynodes(ast);
-        case NODE_FUNCTION_CALL: free_function_call(ast);
-        case NODE_FUNCTION:      free_function(ast);
-        case NODE_IMPORT:        free_import(ast);
-        case NODE_IDENTIFIER:    free_identifier(ast);
-        // case NODE_NUMBER:        free_number(ast);
-        default:                 assert(0);
+        case NODE_FORLOOP:       free_forloop(ast);       break;
+        case NODE_ASSIGNMENT:    free_assignment(ast);    break;
+        case NODE_MANYNODES:     free_manynodes(ast);     break;
+        case NODE_FUNCTION_CALL: free_function_call(ast); break;
+        case NODE_FUNCTION:      free_function(ast);      break;
+        case NODE_IMPORT:        free_import(ast);        break;
+        case NODE_IDENTIFIER:    free_identifier(ast);    break;
+        case NODE_DECLARATION:   free_declaration(ast);   break;
+        // case NODE_NUMBER:        free_number(ast);        break;
+        default:                 assert("ASTNode type not declared" == 0);
     }
     free(ast);
 }
