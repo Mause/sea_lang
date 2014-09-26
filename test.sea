@@ -1,3 +1,18 @@
+import world;
+
 func name() {
     var world = 0;
+
+    for thing in world {
+    }
+}
+
+func what(world, what_up) {
+    print(world);
+}
+
+
+func main() {
+    var world;
+    print(world);
 }
