@@ -1,16 +1,20 @@
+#include <stdlib.h>
 #include <stdio.h>
 
 #include "src/sea.h"
 
 int main(int argc, char* argv[]) {
     // parse arguments
-    while((opt = getopt(argc, argv, "d:")) != -1) {
+    char opt;
+    extern int optind;
+    while((opt = getopt(argc, argv, "d")) != -1) {
         switch(opt) {
             case 'd': {
                 extern int yydebug;
                 yydebug = 1;
+                break;
             }
-            default: {
+            case '?': {
                 fprintf(stderr, "Usage: %s [-d] input_filename\n", argv[0]);
                 exit(EXIT_FAILURE);
             }
