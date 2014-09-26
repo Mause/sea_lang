@@ -22,9 +22,9 @@ for                     return FOR;
 ,                       return COMMA;
 =                       return EQUALS;
 #                       return HASH;
-\"                      printf("QUOTE ");
+\"                      return QUOTE;
 
-[a-zA-Z][a-zA-Z0-9]*    {
+[a-zA-Z_][_a-zA-Z0-9]*    {
                             yylval.string=strdup(yytext);
                             return IDENTIFIER;
                         }
