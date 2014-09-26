@@ -12,7 +12,8 @@ enum NodeType {
     NODE_IMPORT,
     NODE_IDENTIFIER,
     NODE_NUMBER,
-    NODE_STRING_LITERAL
+    NODE_STRING_LITERAL,
+    NODE_DECLARATION
 };
 
 struct ASTNode_t;
@@ -27,6 +28,11 @@ typedef struct {
     char* ident;
     struct ASTNode_t* expr;
 } assignment;
+
+typedef struct {
+    char* ident;
+    struct ASTNode_t* expr;
+} declaration;
 
 typedef struct {
     int num_nodes;
@@ -58,6 +64,7 @@ typedef struct ASTNode_t {
         many_nodes* nodes;
         function_call* call;
         function* func;
+        declaration* declare;
     };
 } ASTNode;
 

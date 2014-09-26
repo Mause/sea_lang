@@ -55,6 +55,7 @@ statements:
           | statements statement;
 
 statement: assignment SEMICOLON
+         | declaration SEMICOLON
          | forloop
          | expression SEMICOLON;
 
@@ -62,6 +63,24 @@ assignment: IDENTIFIER EQUALS expression {
     printf("%s equals %s\n", $1, $2);
 };
 
+declaration: VAR assignment {
+                $$ = create_ast_node();
+                $$->type = NODE_DECLARATION;
+                $$->declare = calloc(1, sizeof(*$$->declare));
+                $$->declare->ident = $2->assign->ident;
+                $$->declare->expr = $2->assign->expr;
+
+//                free_ast($2);
+           }
+           | VAR IDENTIFIER {
+                $$ = create_ast_node();
+                $$->type = NODE_DECLARATION;
+                $$->declare = calloc(1, sizeof(*$$->declare));
+                $$->declare->ident = strdup($2);
+                $$->declare->expr = NULL;
+
+//                free_ast($2);
+           };
 
 import: IMPORT IDENTIFIER SEMICOLON {
     printf("Import %s\n", $2);

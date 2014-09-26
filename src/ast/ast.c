@@ -50,6 +50,13 @@ void free_identifier(ASTNode* ast) {
     free(ast->string);
 }
 
+void free_declaration(ASTNode* ast) {
+    free(ast->declare->ident);
+    if (ast->declare->expr != NULL) {
+        free(ast->declare->expr);
+    }
+}
+
 // void free_number(ASTNode( i))
 
 void free_ast(ASTNode* ast) {
@@ -78,6 +85,7 @@ char* repr(int type) {
         case NODE_IMPORT:        return "NODE_IMPORT";
         case NODE_IDENTIFIER:    return "NODE_IDENTIFIER";
         case NODE_NUMBER:        return "NODE_NUMBER";
+        case NODE_DECLARATION:   return "NODE_DECLARATION";
         default:                 assert(0);
     }
 }

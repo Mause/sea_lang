@@ -37,6 +37,12 @@ void render_assignment(ASTNode* ast, int indent) {
 }
 
 
+void render_declaration(ASTNode* ast, int indent) {
+    do_indent(indent);
+    printf("var %s;\n", ast->declare->ident);
+}
+
+
 void render_manynodes(ASTNode* ast, int indent) {
     assert(ast->type == NODE_MANYNODES);
     render_raw_manynodes(ast->nodes, indent);
@@ -123,6 +129,7 @@ void render_ast(ASTNode* ast, int indent) {
         RENDER(NODE_FUNCTION_CALL, render_function_call);
         RENDER(NODE_FUNCTION, render_function);
         RENDER(NODE_IMPORT, render_import);
+        RENDER(NODE_DECLARATION, render_declaration);
         default: printf("unknown");
     }
 }
