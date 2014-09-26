@@ -3,11 +3,6 @@ CFLAGS = -g -I src -I .
 
 all: build/main
 
-
-build/parser.o: src/parser.h src/parser.c
-	$(CC) $(CFLAGS) src/parser.c -c -o build/parser.o
-
-
 build/flex_parser.o: src/flex_parser.l build/grammar.o
 	flex --outfile=build/flex_parser.c src/flex_parser.l
 	$(CC) $(CFLAGS) build/flex_parser.c -c -o build/flex_parser.o
@@ -24,7 +19,6 @@ build/sea.o: src/sea.h src/sea.c
 
 SRC = build/grammar.o \
 	  build/flex_parser.o \
-	  build/parser.o \
 	  build/sea.o \
 	  src/main.c
 
@@ -34,7 +28,6 @@ build/main: $(SRC)
 
 clean:
 	rm -f \
-		build/parser.o \
 		build/sea.o \
 		build/main \
 		build/flex_parser.c \
