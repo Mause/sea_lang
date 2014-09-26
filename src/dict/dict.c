@@ -73,6 +73,18 @@ void dict_free(dict* d) {
     free(d);
 }
 
+void dict_repr(dict* d) {
+    printf("Dict:\n");
+    int i;
+    printf("{\n");
+    for (i=0; i<d->max_size; i++) {
+        if (d->entries[i] != NULL && d->entries[i]->state == IN_USE) {
+            printf("    \"%s\": %s\n", d->entries[i]->key, d->entries[i]->value);
+        }
+    }
+    printf("}\n");
+}
+
 static void dict_free_entries(dict_entry** entries, int num) {
     int i;
 
