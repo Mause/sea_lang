@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include "src/ast.h"
+#include "src/ast/ast.h"
 
 ASTNode* create_ast_node() {
     ASTNode* node = calloc(1, sizeof(*node));

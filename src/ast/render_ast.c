@@ -3,7 +3,7 @@
 #include <string.h>
 #include <assert.h>
 
-#include "src/render_ast.h"
+#include "src/ast/render_ast.h"
 
 
 void do_indent(int indent) {
