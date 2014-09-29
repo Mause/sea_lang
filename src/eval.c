@@ -66,7 +66,7 @@ int run_function(ASTNode* func, ASTNode* program, callstack* cs) {
         case NODE_DECLARATION: {
             if (current->declare->expr == NULL) {
                 dict_set(
-                    cur_frame->variables,
+                    cs->top->variables,
                     current->declare->ident,
                     SeaNone
                 );
