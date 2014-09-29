@@ -35,7 +35,11 @@ SeaObject* get_variable(char* name, stack_frame* stack) {
     SeaObject* obj = dict_get(stack->variables, name);
 
     if (obj == NULL) {
-        return get_variable(name, stack->previous);
+        if (stack->next == NULL) {
+            return NULL;
+        } else {
+            return get_variable(name, stack->next);
+        }
     } else {
         return obj;
     }
