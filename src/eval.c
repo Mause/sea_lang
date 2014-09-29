@@ -67,7 +67,7 @@ int run_function(ASTNode* func, ASTNode* program, callstack* cs) {
                     SeaNone
                 );
             } else {
-                fprintf(stderr, "var's with values not yet suppored\n");
+                fprintf(stderr, "var's with values not yet supported\n");
             }
             break;
         }
