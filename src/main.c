@@ -3,6 +3,8 @@
 
 #include "src/sea.h"
 
+#define USAGE "Usage: %s [-d] input_filename\n"
+
 int main(int argc, char* argv[]) {
     // parse arguments
     char opt;
@@ -15,7 +17,7 @@ int main(int argc, char* argv[]) {
                 break;
             }
             case '?': {
-                fprintf(stderr, "Usage: %s [-d] input_filename\n", argv[0]);
+                fprintf(stderr, USAGE, argv[0]);
                 exit(EXIT_FAILURE);
             }
         }
@@ -23,6 +25,7 @@ int main(int argc, char* argv[]) {
 
     if (optind >= argc) {
         fprintf(stderr, "Expected argument after options\n");
+        fprintf(stderr, USAGE, argv[0]);
         exit(EXIT_FAILURE);
     }
 

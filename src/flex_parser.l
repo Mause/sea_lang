@@ -3,6 +3,8 @@
 #include "build/grammar.h"
 %}
 
+%option noyywrap
+
 %%
 [0-9]+                  return NUMBER;
 \{                      return OPEN_CURLY;

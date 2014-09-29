@@ -18,5 +18,4 @@ stack_frame* stack_push(callstack* cs);
 void stack_free_frame(stack_frame* frame);
 callstack* stack_create();
 
-
 #endif

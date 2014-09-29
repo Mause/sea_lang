@@ -13,10 +13,6 @@ void yyerror(const char *str) {
     fprintf(stderr, "error: %s\n", str);
 }
 
-int yywrap() {
-    return 1;
-}
-
 void scan_string(const char* str) {
     yy_switch_to_buffer(yy_scan_string(str));
 }

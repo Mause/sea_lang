@@ -76,6 +76,7 @@ int run_function(ASTNode* func, ASTNode* program, callstack* cs) {
             break;
         }
         case NODE_ASSIGNMENT: {
+
             void* val = get_variable(
                 current->assign->ident,
                 cs->top
