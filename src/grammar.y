@@ -122,12 +122,7 @@ import: IMPORT IDENTIFIER SEMICOLON { $$ = create_import($2); };
 
 
 forloop: FOR IDENTIFIER IN expression OPEN_CURLY body CLOSE_CURLY {
-    $$ = create_ast_node();
-    $$->type = NODE_FORLOOP;
-    $$->fl = calloc(1, sizeof(*$$->fl));
-    $$->fl->iter_ident = strdup($2);
-    $$->fl->iterable = $4;
-    $$->fl->body = $6;
+    $$ = create_forloop($2, $4, $6);
 };
 
 
