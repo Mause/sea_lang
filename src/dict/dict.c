@@ -4,6 +4,7 @@
 #include <assert.h>
 
 #include "src/bool.h"
+#include "src/object/none.h"
 #include "src/dict/dict.h"
 #include "src/dict/dict_entry.h"
 
@@ -78,8 +79,14 @@ void dict_repr(dict* d) {
     int i;
     printf("{\n");
     for (i=0; i<d->max_size; i++) {
-        if (d->entries[i] != NULL && d->entries[i]->state == IN_USE) {
-            printf("    \"%s\": 0x%d\n", d->entries[i]->key, d->entries[i]->value);
+        dict_entry* cur_entry = d->entries[i];
+
+        if (cur_entry != NULL && cur_entry->state == IN_USE) {
+            if (cur_entry->value == SeaNone) {
+                printf("    \"%s\": None\n", cur_entry->key);
+            } else {
+                printf("    \"%s\": 0x%d\n", cur_entry->key, cur_entry->value);
+            }
         }
     }
     printf("}\n");
