@@ -1,33 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <assert.h>
 
 #include "src/stack.h"
-#include "src/bool.h"
 
+#include "src/stack_machine/program.h"
+#include "src/stack_machine/instruction.h"
 
-enum Instruction {
-    PUSH, POP, ADD, IFEQ, JUMP, PRINT, DUP, NOP
-};
-
-bool startswith(char* poss, char* chunk) {
-    char* result = strstr(poss, chunk);
-
-    return result != NULL && result == poss;
-}
-
-int to_instruction(char* line) {
-         if (startswith(line, "push"))  return PUSH;
-    else if (startswith(line, "pop"))   return POP;
-    else if (startswith(line, "add"))   return ADD;
-    else if (startswith(line, "ifeq"))  return IFEQ;
-    else if (startswith(line, "jump"))  return JUMP;
-    else if (startswith(line, "print")) return PRINT;
-    else if (startswith(line, "dup"))   return DUP;
-    else if (startswith(line, "nop"))   return NOP;
-    else                                return -1;
-}
 
 void first_n(int* stack, int n) {
     int i;
@@ -36,88 +15,6 @@ void first_n(int* stack, int n) {
     }
     printf("\n");
 }
-
-char* repr_instruction(int instruction) {
-    switch(instruction) {
-        case PUSH:  return "push";
-        case POP:   return "pop";
-        case ADD:   return "add";
-        case IFEQ:  return "ifeq";
-        case JUMP:  return "jump";
-        case PRINT: return "print";
-        case DUP:   return "dup";
-        case NOP:   return "nop";
-        default:    return "unknown";
-    }
-}
-
-int count_lines(FILE* file) {
-    int lines = 0;
-    char buffer[1024];
-    while (fgets(buffer, 1024, file)) lines++;
-    rewind(file);
-    return lines;
-}
-
-typedef struct {
-    char** program;
-    int num_lines;
-    dict* symbol_table;
-} program;
-
-void free_program(program* prog) {
-    int i;
-    for (i=0; i<prog->num_lines; i++) {
-        free(prog->program[i]);
-    }
-    free(prog->program);
-    dict_free(prog->symbol_table);
-    free(prog);
-}
-
-
-typedef struct {
-    int pc;
-} symbol;
-
-
-program* read_program(FILE* file) {
-    program* prog = calloc(1, sizeof(*prog));
-
-    prog->num_lines = count_lines(file);
-    prog->symbol_table = dict_create(10);
-    prog->program = calloc(prog->num_lines, sizeof(char*));
-
-    int cur_line=0;
-    char buffer[1024];
-    while (fgets(buffer, 1024, file)) {
-        strtok(buffer, "\n");
-
-        if (buffer[0] == ':') {
-            symbol* sim = calloc(1, sizeof(*sim));
-            sim->pc = cur_line;
-
-            dict_set(
-                prog->symbol_table,
-                strdup(buffer+1), // everything bar the colon
-                sim
-            );
-            prog->program[cur_line++] = strdup("nop");
-
-        } else if (buffer[0] == '#') {
-            prog->program[cur_line++] = strdup("nop");
-
-        } else {
-            prog->program[cur_line++] = strdup(buffer);
-
-        }
-    }
-
-    // dict_keys(prog->symbol_table);
-
-    return prog;
-}
-
 
 int main(int argc, char const *argv[]) {
     if (argc < 2) {
