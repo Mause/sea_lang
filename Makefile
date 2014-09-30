@@ -30,6 +30,10 @@ build/compile.o: src/compile.h src/compile.c
 	$(CC) $(CFLAGS) src/compile.c -c -o build/compile.o
 
 
+build/none.o: src/object/none.h src/object/none.c
+	$(CC) $(CFLAGS) src/object/none.c -c -o build/none.o
+
+
 build/dict_entry.o: src/dict/dict_entry.c src/dict/dict_entry.h
 	$(CC) $(CFLAGS) src/dict/dict_entry.c -c -o build/dict_entry.o
 
@@ -49,6 +53,7 @@ build/grammar_handlers.o: src/grammar_handlers.h src/grammar_handlers.c
 SRC = build/grammar.o \
 	  build/grammar_handlers.o \
 	  build/flex_parser.o \
+	  build/none.o \
 	  build/dict_entry.o \
 	  build/primes.o \
 	  build/stack.o \
