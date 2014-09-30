@@ -1,0 +1,15 @@
+jump main
+
+push 2
+print
+
+
+:mul
+# multiplies the top two items of the stack by each other
+
+
+:main
+push 2
+print
+push -2
+print

@@ -43,3 +43,6 @@ target_link_libraries(test_dict libsea)
 
 add_executable(main src/main.c)
 target_link_libraries(main libsea)
+
+add_executable(stack_machine src/stack_machine.c)
+target_link_libraries(stack_machine libsea)
