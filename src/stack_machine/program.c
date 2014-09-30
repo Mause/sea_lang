@@ -1,3 +1,6 @@
+#include <stdlib.h>
+#include <string.h>
+
 #include "src/stack_machine/program.h"
 
 static int count_lines(FILE* file) {
@@ -31,7 +34,10 @@ program* read_program(FILE* file) {
     while (fgets(buffer, 1024, file)) {
         strtok(buffer, "\n");
 
-        if (buffer[0] == ':') {
+        if (buffer[0] == '\n') {
+            prog->program[cur_line++] = strdup("nop");
+
+        } else if (buffer[0] == ':') {
             symbol* sim = calloc(1, sizeof(*sim));
             sim->pc = cur_line;
 

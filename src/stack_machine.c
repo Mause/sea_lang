@@ -4,6 +4,7 @@
 
 #include "src/stack.h"
 
+#include "src/stack_machine.h"
 #include "src/stack_machine/program.h"
 #include "src/stack_machine/instruction.h"
 
@@ -11,10 +12,22 @@
 void first_n(int* stack, int n) {
     int i;
     for (i=0; i<n; i++) {
-        printf("%d, ", stack[i]);
+        printf("%d", stack[i]);
+
+        if (i == (n-1)) {
+            printf("\n");
+        } else {
+            printf(", ");
+        }
     }
-    printf("\n");
 }
+
+int pop(stack_machine* mach) {
+    int val = mach->stack[mach->sp];
+    mach->stack[mach->sp--] = 0;
+    return val;
+}
+
 
 int main(int argc, char const *argv[]) {
     if (argc < 2) {
@@ -29,97 +42,112 @@ int main(int argc, char const *argv[]) {
         return -1;
     }
 
-    program* prog = read_program(file);
+    stack_machine* mach = calloc(1, sizeof(*mach));
+    mach-> prog = read_program(file);
 
     fclose(file);
 
-    int* stack = calloc(200, sizeof(int)),
-         pc = 0,
-         sp = -1;
+    mach->stack = calloc(200, sizeof(int));
+    mach->pc = 0;
+    mach->sp = -1;
 
-    assert(pc != prog->num_lines);
-    while (pc != prog->num_lines) {
-        // first_n(stack, 5);
-        assert(prog->program[pc] != NULL);
+    assert(mach->pc != mach->prog->num_lines);
+    while (mach->pc != mach->prog->num_lines) {
+        first_n(mach->stack, 5);
+        assert(mach->prog->program[mach->pc] != NULL);
 
-        // printf("%s\n", prog->program[pc]);
-        int instruction = to_instruction(prog->program[pc]);
+        int instruction = to_instruction(mach->prog->program[mach->pc]);
         if (instruction == -1) {
-            fprintf(stderr, "Invalid instruction: %s\n", prog->program[pc]);
+            fprintf(
+                stderr,
+                "Invalid instruction: \"%s\"\n", mach->prog->program[mach->pc]
+            );
             return -1;
         }
 
         switch(instruction) {
             case NOP: {
-                pc++;
+                mach->pc++;
                 break;
             }
             case PUSH: {
-                stack[++sp] = atoi(prog->program[pc]+5);
-                pc++;
+                char* push_val = mach->prog->program[mach->pc]+5;
+
+                if (push_val[0] == '\0') {
+                    mach->stack[++mach->sp] = mach->pc++;
+
+                } else {
+                    mach->stack[++mach->sp] = atoi(push_val);
+                    mach->pc++;
+                }
+
                 break;
             }
             case POP: {
-                assert(sp >= 0);
-                stack[sp] = 0;
-                sp--;
-                pc++;
+                assert(mach->sp >= 0);
+                pop(mach);
+
+                mach->pc++;
                 break;
             }
             case ADD: {
-                assert(sp >= 1);
-                int num_1, num_2;
-                num_1 = stack[sp--];
-                num_2 = stack[sp--];
-                stack[sp+1] = 0;
-                stack[sp+2] = 0;
+                assert(mach->sp >= 1);
+                // int num_1 = mach->stack[mach->sp--],
+                //     num_2 = mach->stack[mach->sp--];
+                // mach->stack[mach->sp+1] = 0;
+                // mach->stack[mach->sp+2] = 0;
+                int num_1 = pop(mach),
+                    num_2 = pop(mach);
 
-                stack[++sp] = num_1 + num_2;
-                pc++;
+                mach->stack[++mach->sp] = num_1 + num_2;
+                mach->pc++;
                 break;
             }
             case IFEQ: {
-                assert(sp >= 1);
-                int top = stack[sp];
+                assert(mach->sp >= 1);
+                int top = mach->stack[mach->sp];
                 if (top == 0) {
-                    pc++;
+                    mach->pc++;
                 } else {
-                    pc = atoi(prog->program[pc]+5) - 1;
+                    mach->pc = atoi(mach->prog->program[mach->pc]+5) - 1;
                 }
                 break;
             }
             case JUMP: {
-                char* jump_pos = prog->program[pc]+5;
+                char* jump_pos = mach->prog->program[mach->pc]+5;
 
-                if (isalpha(jump_pos[0])) {
+                if (jump_pos[0] == '\0') {
+                    mach->pc = pop(mach);
+
+                } else if (isalpha(jump_pos[0])) {
                     symbol* sim = dict_get(
-                        prog->symbol_table,
+                        mach->prog->symbol_table,
                         jump_pos
                     );
                     if (sim == NULL) {
                         printf("No such label as %s\n", jump_pos);
                         assert(sim != NULL);
                     }
-                    pc = sim->pc;
+                    mach->pc = sim->pc;
 
                 } else {
-                    pc = atoi(jump_pos) - 1;
+                    mach->pc = atoi(jump_pos) - 1;
                 }
 
                 break;
             }
             case PRINT: {
-                printf("%d\n", stack[sp]);
-                pc++;
+                printf("%d\n", mach->stack[mach->sp]);
+                mach->pc++;
                 break;
             }
             case DUP: {
-                stack[++sp] = stack[sp];
-                pc++;
+                mach->stack[++mach->sp] = mach->stack[mach->sp];
+                mach->pc++;
                 break;
             }
             default: {
-                printf("%s\n", prog->program[pc]);
+                printf("%s\n", mach->prog->program[mach->pc]);
                 assert("unknown instruction" == 0);
             }
         }
@@ -128,10 +156,9 @@ int main(int argc, char const *argv[]) {
 
     // first_n(stack, 5);
 
-    free_program(prog);
+    free_program(mach->prog);
+    free(mach->stack);
+    free(mach);
 
-    free(stack);
-
-    /* code */
     return 0;
 }
