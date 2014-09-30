@@ -92,6 +92,17 @@ void dict_repr(dict* d) {
     printf("}\n");
 }
 
+void dict_keys(dict* d) {
+    int i;
+    for (i=0; i<d->max_size; i++) {
+        dict_entry* cur_entry = d->entries[i];
+        if (cur_entry != NULL && cur_entry->state == IN_USE) {
+            printf("%s, ", cur_entry->key);
+        }
+    }
+    printf("\n");
+}
+
 static void dict_free_entries(dict_entry** entries, int num) {
     int i;
 
