@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "src/stack_machine/program.h"
+#include "./program.h"
 
 static int count_lines(FILE* file) {
     int lines = 0;

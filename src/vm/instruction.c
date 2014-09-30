@@ -1,7 +1,7 @@
 #include <string.h>
 
 #include "src/bool.h"
-#include "src/stack_machine/instruction.h"
+#include "./instruction.h"
 
 bool startswith(char* poss, char* chunk) {
     char* result = strstr(poss, chunk);

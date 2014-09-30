@@ -1,7 +1,7 @@
 #ifndef STACK_MACHINE_H
 #define STACK_MACHINE_H
 
-#include "src/stack_machine/program.h"
+#include "./program.h"
 
 typedef struct {
     program* prog;

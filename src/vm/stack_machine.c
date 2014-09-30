@@ -1,12 +1,10 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include <assert.h>
 
 #include "src/stack.h"
 
-#include "src/stack_machine.h"
-#include "src/stack_machine/program.h"
-#include "src/stack_machine/instruction.h"
+#include "./stack_machine.h"
+#include "./program.h"
+#include "./instruction.h"
 
 
 void first_n(int* stack, int n) {
