@@ -115,6 +115,10 @@ int run_machine(stack_machine* mach) {
             case DUP: {
                 mach->stack[++mach->sp] = mach->stack[mach->sp];
                 mach->pc++;
+            }
+            case SLEEP: {
+                sleep(1);
+                mach->pc++;
                 break;
             }
             default: {
