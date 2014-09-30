@@ -20,6 +20,7 @@ void first_n(int* stack, int n) {
     }
 }
 
+
 int pop(stack_machine* mach) {
     int val = mach->stack[mach->sp];
     mach->stack[mach->sp--] = 0;
@@ -30,7 +31,6 @@ int pop(stack_machine* mach) {
 int run_machine(stack_machine* mach) {
     assert(mach->pc != mach->prog->num_lines);
     while (mach->pc != mach->prog->num_lines) {
-        first_n(mach->stack, 5);
         assert(mach->prog->program[mach->pc] != NULL);
 
         int instruction = to_instruction(mach->prog->program[mach->pc]);
@@ -69,10 +69,6 @@ int run_machine(stack_machine* mach) {
             }
             case ADD: {
                 assert(mach->sp >= 1);
-                // int num_1 = mach->stack[mach->sp--],
-                //     num_2 = mach->stack[mach->sp--];
-                // mach->stack[mach->sp+1] = 0;
-                // mach->stack[mach->sp+2] = 0;
                 int num_1 = pop(mach),
                     num_2 = pop(mach);
 
