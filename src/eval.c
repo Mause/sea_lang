@@ -85,6 +85,13 @@ int run_function(ASTNode* func, ASTNode* program, callstack* cs) {
             if (val == NULL) {
                 fprintf(stderr, "No such variable as %s\n", current->assign->ident);
             }
+
+            dict_set(
+                cs->top->variables,
+                current->assign->ident,
+                current->assign->expr
+            );
+
             break;
         }
         case NODE_FUNCTION_CALL: {
