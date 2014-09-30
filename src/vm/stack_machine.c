@@ -48,13 +48,11 @@ int run_machine(stack_machine* mach) {
                 break;
             }
             case PUSH: {
-                char* push_val = mach->prog->program[mach->pc]+5;
-
-                if (push_val[0] == '\0') {
+                if (mach->prog->program[mach->pc][4] == '\0') {
                     mach->stack[++mach->sp] = mach->pc++;
 
                 } else {
-                    mach->stack[++mach->sp] = atoi(push_val);
+                    mach->stack[++mach->sp] = atoi(mach->prog->program[mach->pc]+5);
                     mach->pc++;
                 }
 
