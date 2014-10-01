@@ -42,8 +42,8 @@ program* read_program(FILE* file) {
     while (fgets(buffer, 1024, file)) {
         strtok(buffer, "\n");
 
-        if (buffer[0] == '\n') {
-            prog->program[cur_line++] = strdup("nop");
+        if (buffer[0] == '\n' || buffer[0] == '#') {
+            // don't do anything for a comment or an empty line
 
         } else if (buffer[0] == ':') {
             symbol* sim = calloc(1, sizeof(*sim));
@@ -54,10 +54,6 @@ program* read_program(FILE* file) {
                 strdup(buffer+1), // everything bar the colon
                 sim
             );
-            prog->program[cur_line++] = strdup("nop");
-
-        } else if (buffer[0] == '#') {
-            prog->program[cur_line++] = strdup("nop");
 
         } else {
             prog->program[cur_line++] = strdup(buffer);
@@ -65,7 +61,7 @@ program* read_program(FILE* file) {
         }
     }
 
-    // dict_keys(prog->symbol_table);
+    prog->num_lines = cur_line;
 
     return prog;
 }
