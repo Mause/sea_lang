@@ -27,6 +27,32 @@ int pop(stack_machine* mach) {
     return val;
 }
 
+void push(stack_machine* mach, int val) {
+    mach->stack[++mach->sp] = val;
+}
+
+void jump(stack_machine* mach, char* dest) {
+    if (isalpha(dest[0])) {
+        symbol* sim = dict_get(
+            mach->prog->symbol_table,
+            dest
+        );
+        if (sim == NULL) {
+            printf("No such label as %s\n", dest);
+            assert(sim != NULL);
+        } else {
+            printf("warping to %s\n", dest);
+        }
+        mach->pc = sim->pc;
+    assert(mach->pc >= 0);
+
+    } else {
+        mach->pc = atoi(dest) - 1;
+        printf("%s\n", dest);
+        assert(mach->pc >= 0);
+    }
+}
+
 
 int run_machine(stack_machine* mach) {
     assert(mach->pc != mach->prog->num_lines);
@@ -48,13 +74,11 @@ int run_machine(stack_machine* mach) {
                 break;
             }
             case PUSH: {
-                if (mach->prog->program[mach->pc][4] == '\0') {
-                    mach->stack[++mach->sp] = mach->pc++;
-
-                } else {
-                    mach->stack[++mach->sp] = atoi(mach->prog->program[mach->pc]+5);
-                    mach->pc++;
-                }
+                push(
+                    mach,
+                    atoi(mach->prog->program[mach->pc]+5)
+                );
+                mach->pc++;
 
                 break;
             }
@@ -87,22 +111,12 @@ int run_machine(stack_machine* mach) {
             case JUMP: {
                 char* jump_pos = mach->prog->program[mach->pc]+5;
 
-                if (jump_pos[0] == '\0') {
-                    mach->pc = pop(mach);
-
-                } else if (isalpha(jump_pos[0])) {
-                    symbol* sim = dict_get(
-                        mach->prog->symbol_table,
-                        jump_pos
-                    );
-                    if (sim == NULL) {
-                        printf("No such label as %s\n", jump_pos);
-                        assert(sim != NULL);
-                    }
-                    mach->pc = sim->pc;
+                if (mach->prog->program[mach->pc][4] == '\0') {
+                    printf("warping back to %d\n", mach->stack[mach->sp]);
+                    mach->pc = pop(mach); assert(mach->pc >= 0);
 
                 } else {
-                    mach->pc = atoi(jump_pos) - 1;
+                    jump(mach, jump_pos);
                 }
 
                 break;
