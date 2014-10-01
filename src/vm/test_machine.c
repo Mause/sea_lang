@@ -26,8 +26,9 @@ int main(int argc, char const *argv[]) {
     mach->pc = 0;
     mach->sp = -1;
 
-
-    run_machine(mach);
+    if (run_machine(mach) != 0) {
+        fprintf(stderr, "An error occured during execution\n");
+    }
 
     // first_n(stack, 5);
 

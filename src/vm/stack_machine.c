@@ -174,4 +174,6 @@ int run_machine(stack_machine* mach) {
         }
         // sleep(1);
     }
+
+    return 0;
 }
