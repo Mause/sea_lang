@@ -4,10 +4,10 @@
 #include "src/bool.h"
 
 enum instruction {
-    PUSH,
-    POP,
-    ADD,
-    IFEQ,
+    PUSH,       // push's the specified number onto the stack
+    POP,        // pops the top items on the stack
+    ADD,        // pop the top items from the stack, add them together, and push the result back on top
+    IFEQ,       // if the value on top of the stack is zero, jump the specified address
     JUMP,       // jump to the specified value, or to the value on top of the stack if none is provided
     PRINT,      // prints val on top of stack
     DUP,        // duplicates item on top of stack
