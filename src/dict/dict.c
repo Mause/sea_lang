@@ -48,6 +48,14 @@ static void put_entry(dict* d, dict_entry* entry) {
     d->entries[idx] = entry;
 }
 
+bool dict_valid_entry(dict* d, int i) {
+    dict_entry* entry = d->entries[i];
+
+    bool not_valid = entry == NULL || entry->state == PREVIOUS_USED;
+
+    return !not_valid;
+}
+
 void* dict_get(dict* d, char* key) {
     dict_entry* entry = d->entries[find(d, key)];
 

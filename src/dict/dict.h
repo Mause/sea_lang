@@ -2,6 +2,7 @@
 #define DICT_H
 
 #include "src/dict/dict_entry.h"
+#include "src/bool.h"
 
 typedef struct {
     int count;
@@ -15,5 +16,6 @@ void* dict_get(dict* d, char* key);
 void* dict_remove(dict* d, char* key);
 void dict_repr(dict* d);
 void dict_keys(dict* d);
+bool dict_valid_entry(dict* d, int i);
 
 #endif

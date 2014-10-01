@@ -17,6 +17,14 @@ void free_program(program* prog) {
         free(prog->program[i]);
     }
     free(prog->program);
+    for (i=0; i<prog->symbol_table->max_size; i++) {
+        if (dict_valid_entry(prog->symbol_table, i)) {
+            dict_entry* entry = prog->symbol_table->entries[i];
+
+            free(entry->key);
+            free(entry->value);
+        }
+    }
     dict_free(prog->symbol_table);
     free(prog);
 }
