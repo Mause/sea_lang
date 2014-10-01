@@ -18,6 +18,7 @@ int to_instruction(char* line) {
     else if (startswith(line, "print")) return PRINT;
     else if (startswith(line, "dup"))   return DUP;
     else if (startswith(line, "nop"))   return NOP;
+    else if (startswith(line, "show"))  return SHOW;
     else if (startswith(line, "sleep")) return SLEEP;
     else                                return -1;
 }
@@ -32,6 +33,7 @@ char* repr_instruction(int instruction) {
         case PRINT: return "print";
         case DUP:   return "dup";
         case NOP:   return "nop";
+        case SHOW:  return "show";
         case SLEEP: return "sleep";
         default:    return "unknown";
     }

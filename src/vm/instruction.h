@@ -12,6 +12,7 @@ enum instruction {
     PRINT,      // prints val on top of stack
     DUP,        // duplicates item on top of stack
     NOP,        // does nothing
+    SHOW,       // pretty print the stack
     SLEEP,      // sleep for one second, for debugging purposes
 };
 

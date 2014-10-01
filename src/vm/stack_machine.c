@@ -116,6 +116,20 @@ int run_machine(stack_machine* mach) {
                 mach->stack[++mach->sp] = mach->stack[mach->sp];
                 mach->pc++;
             }
+            case SHOW: {
+                int i;
+                printf("[ ");
+                for (i=0; i<(mach->sp+1); i++) {
+                    printf("%d", mach->stack[i]);
+
+                    if (i != mach->sp) {
+                        printf(", ");
+                    }
+                }
+                printf(" ]\n");
+                mach->pc++; assert(mach->pc >= 0);
+                break;
+            }
             case SLEEP: {
                 sleep(1);
                 mach->pc++;
