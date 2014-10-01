@@ -64,7 +64,9 @@ int run_machine(stack_machine* mach) {
         if (instruction == -1) {
             fprintf(
                 stderr,
-                "Invalid instruction: \"%s\"\n", mach->prog->program[mach->pc]
+                "%s:%d@%s: Invalid instruction: \"%s\"\n",
+                __FILE__, __LINE__, __PRETTY_FUNCTION__,
+                mach->prog->program[mach->pc]
             );
             return -1;
         }
