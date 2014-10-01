@@ -61,7 +61,14 @@ program* read_program(FILE* file) {
         }
     }
 
+    // rebuild program, discarding lines that ended up being comments or empty
     prog->num_lines = cur_line;
+    char** program = calloc(prog->num_lines, sizeof(char*));
+    for (cur_line=0; cur_line<prog->num_lines; cur_line++) {
+        program[cur_line] = prog->program[cur_line];
+    }
+    free(prog->program);
+    prog->program = program;
 
     return prog;
 }
