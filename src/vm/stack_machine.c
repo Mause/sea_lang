@@ -57,6 +57,7 @@ void jump(stack_machine* mach, char* dest) {
 int run_machine(stack_machine* mach) {
     assert(mach->pc != mach->prog->num_lines);
     while (mach->pc != mach->prog->num_lines) {
+        assert(mach->pc >= 0);
         assert(mach->prog->program[mach->pc] != NULL);
 
         int instruction = to_instruction(mach->prog->program[mach->pc]);
@@ -105,6 +106,7 @@ int run_machine(stack_machine* mach) {
                     mach->pc++;
                 } else {
                     mach->pc = atoi(mach->prog->program[mach->pc]+5) - 1;
+                    assert(mach->pc >= 0);
                 }
                 break;
             }
