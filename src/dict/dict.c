@@ -85,7 +85,7 @@ void dict_repr(dict* d) {
             if (cur_entry->value == SeaNone) {
                 printf("    \"%s\": None\n", cur_entry->key);
             } else {
-                printf("    \"%s\": 0x%d\n", cur_entry->key, cur_entry->value);
+                printf("    \"%s\": 0x%ld\n", cur_entry->key, (long)cur_entry->value);
             }
         }
     }
