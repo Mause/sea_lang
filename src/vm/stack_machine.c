@@ -108,7 +108,13 @@ int run_machine(stack_machine* mach) {
                 break;
             }
             case PRINT: {
-                printf("%d\n", mach->stack[mach->sp]);
+                printf("line %d -> ", mach->pc+1);
+                if (mach->sp == -1) {
+                    printf("stack empty\n");
+                } else {
+                    printf("%d\n", mach->stack[mach->sp]);
+                }
+
                 mach->pc++;
                 break;
             }
