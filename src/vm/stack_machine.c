@@ -85,6 +85,13 @@ int run_machine(stack_machine* mach) {
 
                 break;
             }
+            case JSR: {
+                push(mach, mach->pc+1);
+                jump(mach, mach->prog->program[mach->pc]+11);
+                assert(mach->pc >= 0);
+                // pc is assigned in jump
+                break;
+            }
             case POP: {
                 assert(mach->sp >= 0);
                 pop(mach);

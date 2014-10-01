@@ -20,6 +20,7 @@ int to_instruction(char* line) {
     else if (startswith(line, "nop"))   return NOP;
     else if (startswith(line, "show"))  return SHOW;
     else if (startswith(line, "sleep")) return SLEEP;
+    else if (startswith(line, "subroutine")) return JSR;
     else                                return -1;
 }
 
@@ -35,6 +36,7 @@ char* repr_instruction(int instruction) {
         case NOP:   return "nop";
         case SHOW:  return "show";
         case SLEEP: return "sleep";
+        case JSR:   return "subroutine";
         default:    return "unknown";
     }
 }

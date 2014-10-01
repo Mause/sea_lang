@@ -14,6 +14,7 @@ enum instruction {
     NOP,        // does nothing
     SHOW,       // pretty print the stack
     SLEEP,      // sleep for one second, for debugging purposes
+    JSR,        // (jump subroutine) pushes the current address+1 onto the stack, jump to the specified position
 };
 
 bool startswith(char* poss, char* chunk);
