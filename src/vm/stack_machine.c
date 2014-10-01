@@ -115,6 +115,7 @@ int run_machine(stack_machine* mach) {
             case DUP: {
                 mach->stack[++mach->sp] = mach->stack[mach->sp];
                 mach->pc++;
+                break;
             }
             case SHOW: {
                 int i;
