@@ -21,7 +21,8 @@ static void put_entry(dict* d, dict_entry* entry);
 static void resize(dict* d, int size);
 static void resizeIfNeeded(dict* d);
 
-void  dict_set(dict* d, char* key, void* value) {
+
+void dict_set(dict* d, char* key, void* value) {
     dict_entry* entry = dict_create_entry();
     entry->key = key;
     entry->value = value;
@@ -41,12 +42,14 @@ dict* dict_create(int max_size) {
     return dc;
 }
 
+
 static void put_entry(dict* d, dict_entry* entry) {
     d->count++;
     entry->state = IN_USE;
     int idx = find(d, entry->key);
     d->entries[idx] = entry;
 }
+
 
 bool dict_valid_entry(dict* d, int i) {
     dict_entry* entry = d->entries[i];
@@ -55,6 +58,7 @@ bool dict_valid_entry(dict* d, int i) {
 
     return !not_valid;
 }
+
 
 void* dict_get(dict* d, char* key) {
     dict_entry* entry = d->entries[find(d, key)];
@@ -66,6 +70,7 @@ void* dict_get(dict* d, char* key) {
     }
 }
 
+
 void* dict_remove(dict* d, char* key) {
     d->count--;
     void* value = dict_get(d, key);
@@ -76,11 +81,13 @@ void* dict_remove(dict* d, char* key) {
     return value;
 }
 
+
 void dict_free(dict* d) {
     dict_free_entries(d->entries, d->max_size);
     free(d->entries);
     free(d);
 }
+
 
 void dict_repr(dict* d) {
     printf("Dict:\n");
@@ -100,6 +107,7 @@ void dict_repr(dict* d) {
     printf("}\n");
 }
 
+
 void dict_keys(dict* d) {
     int i;
     for (i=0; i<d->max_size; i++) {
@@ -111,6 +119,7 @@ void dict_keys(dict* d) {
     printf("\n");
 }
 
+
 static void dict_free_entries(dict_entry** entries, int num) {
     int i;
 
@@ -120,6 +129,7 @@ static void dict_free_entries(dict_entry** entries, int num) {
         }
     }
 }
+
 
 static bool okFor(dict* d, char* key, int idx) {
     dict_entry* cur_val = d->entries[idx];
@@ -139,11 +149,12 @@ static bool okFor(dict* d, char* key, int idx) {
     }
 }
 
-static int MAX_STEP = 5;
 
+static int MAX_STEP = 5;
 static int stepHash(int key) {
     return MAX_STEP - (key % MAX_STEP);
 }
+
 
 static int find(dict* d, char* key) {
     int idx = hash(d, key);
@@ -154,6 +165,7 @@ static int find(dict* d, char* key) {
 
     return idx;
 }
+
 
 bool contains_key(dict* d, char* key) {
     dict_entry* entry = d->entries[find(d, key)];
@@ -166,6 +178,7 @@ bool contains_key(dict* d, char* key) {
         return TRUE;
     }
 }
+
 
 static void resize(dict* d, int size) {
     dict_entry** old_table = d->entries;
@@ -201,14 +214,15 @@ static void resize(dict* d, int size) {
 //     return hashIdx % d->max_size; // We’ll discuss this line later
 // }
 
+
 static int hash(dict* d, char* key) {
     int hashIdx = 0,
         key_length = strlen(key),
-        g, ii;
+        ii;
 
     for (ii = 0; ii < key_length; ii++) {
         hashIdx = (hashIdx << 4) + key[ii];
-        g = hashIdx & 0xF0000000;
+        int g = hashIdx & 0xF0000000;
         if (g != 0) {
             hashIdx = hashIdx ^ (g >> 24); // ^ is the XOR operator
         }
@@ -216,6 +230,7 @@ static int hash(dict* d, char* key) {
     }
     return hashIdx % d->max_size;
 }
+
 
 static void resizeIfNeeded(dict* d) {
     int new_size = d->max_size;
@@ -234,6 +249,7 @@ static void resizeIfNeeded(dict* d) {
     }
 }
 
+
 static double GLASS_HALF_FULL = 60;
 static double GLASS_HALF_EMPTY = 30;
 
@@ -241,9 +257,11 @@ static double percentageFull(dict* d) {
     return ((double)d->count) / ((double)d->max_size) * 100.0;
 }
 
+
 static bool overFull(dict* d) {
     return percentageFull(d) > GLASS_HALF_FULL;
 }
+
 
 static bool underFull(dict* d) {
     return percentageFull(d) < GLASS_HALF_EMPTY;
