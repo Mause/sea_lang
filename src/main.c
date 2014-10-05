@@ -3,21 +3,31 @@
 
 #include "src/sea.h"
 
-#define USAGE "Usage: %s [-d] input_filename\n"
+void print_usage(char** argv) {
+    printf("Usage:   %s [-d] input_filename\n", argv[0]);
+    printf("Options: -h     Print this help message\n");
+    printf("         -d     Print lexing debug messages\n");
+
+    printf("\n");
+    printf("         [input_filename] can be a dash (-) for reading a program\n");
+    printf("                          from standard in\n");
+}
+
 
 int main(int argc, char* argv[]) {
     // parse arguments
     char opt;
     extern int optind;
-    while((opt = getopt(argc, argv, "d")) != -1) {
+    while((opt = getopt(argc, argv, "dh")) != -1) {
         switch(opt) {
             case 'd': {
                 extern int yydebug;
                 yydebug = 1;
                 break;
             }
+            case 'h':
             case '?': {
-                fprintf(stderr, USAGE, argv[0]);
+                print_usage(argv);
                 exit(EXIT_FAILURE);
             }
         }
@@ -25,7 +35,7 @@ int main(int argc, char* argv[]) {
 
     if (optind >= argc) {
         fprintf(stderr, "Expected argument after options\n");
-        fprintf(stderr, USAGE, argv[0]);
+        print_usage(argv);
         exit(EXIT_FAILURE);
     }
 
