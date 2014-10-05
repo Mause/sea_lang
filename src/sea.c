@@ -7,7 +7,7 @@
 
 #include "src/ast/ast.h"
 
-sea* create_sea() {
+sea* create_sea(void) {
     sea* s = malloc(sizeof(*s));
 
     return s;

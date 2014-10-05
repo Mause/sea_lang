@@ -4,7 +4,7 @@
 #include "src/dict/dict.h"
 #include "src/bool.h"
 
-int testBasic() {
+int testBasic(void) {
     dict* table = dict_create(100);
 
     dict_set(table, "World", "Hello");
@@ -19,7 +19,7 @@ int testBasic() {
     return res;
 }
 
-int testRemoveValue() {
+int testRemoveValue(void) {
     dict* table = dict_create(20);
 
     dict_set(table, "World", "Hello");
@@ -33,7 +33,7 @@ int testRemoveValue() {
     return res;
 }
 
-int testResizeLarger() {
+int testResizeLarger(void) {
     dict* table = dict_create(3);
 
     dict_set(table, "World", "Hello");
@@ -47,7 +47,7 @@ int testResizeLarger() {
     return res;
 }
 
-int testResizeSmaller() {
+int testResizeSmaller(void) {
     dict* table = dict_create(7);
 
     dict_set(table, "Hello", "World");
@@ -60,7 +60,7 @@ int testResizeSmaller() {
     return res;
 }
 
-int testContainsKey() {
+int testContainsKey(void) {
     bool res = TRUE;
     dict* table = dict_create(7);
 

@@ -49,7 +49,7 @@ stack_frame* stack_push(callstack* cs) {
 }
 
 
-callstack* stack_create() {
+callstack* stack_create(void) {
     callstack* cs = calloc(1, sizeof(*cs));
 
     cs->top = NULL;

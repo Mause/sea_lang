@@ -4,7 +4,7 @@
 
 #include "src/ast/ast.h"
 
-ASTNode* create_ast_node() {
+ASTNode* create_ast_node(void) {
     ASTNode* node = calloc(1, sizeof(*node));
     node->type = -1;
     return node;
