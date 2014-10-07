@@ -101,6 +101,7 @@ ASTNode* append_to_manynodes(ASTNode* manynodes, ASTNode* new_node) {
     }
     new_many->nodes->nodes[new_many->nodes->num_nodes-1] = new_node;
 
+    free(manynodes->nodes);
     free(manynodes);
 
     return new_many;
