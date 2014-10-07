@@ -42,6 +42,7 @@ ASTNode* res;
              statement
              statements
              curly_scope
+             argument
              ;
 %type <string> argument_declaration;// string;
 
@@ -119,8 +120,8 @@ forloop: FOR IDENTIFIER IN expression OPEN_CURLY body CLOSE_CURLY {
 };
 
 
-arguments: {$$ = NULL; }
-         | arguments argument;
+arguments: { $$ = NULL; }
+         | arguments argument { free_ast($2); };
 argument : expression COMMA | expression;
 
 

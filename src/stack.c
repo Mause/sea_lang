@@ -40,6 +40,8 @@ void stack_free(callstack* cs) {
         stack_free_frame(current);
         current = next;
     }
+
+    free(cs);
 }
 
 

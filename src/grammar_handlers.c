@@ -62,6 +62,9 @@ ASTNode* create_declaration_from_assignment(ASTNode* assignment) {
     declaration->declare->ident = assignment->assign->ident;
     declaration->declare->expr = assignment->assign->expr;
 
+    free(assignment->assign);
+    free(assignment);
+
     return declaration;
 }
 

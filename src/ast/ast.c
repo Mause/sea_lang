@@ -17,6 +17,7 @@ void free_raw_manynodes(many_nodes* nodes) {
         free_ast(nodes->nodes[i]);
     }
     free(nodes->nodes);
+    free(nodes);
 }
 
 void free_forloop(ASTNode* ast) {
@@ -43,9 +44,14 @@ void free_function_call(ASTNode* ast) {
     if (ast->call->arguments != NULL) {
         free_raw_manynodes(ast->call->arguments);
     }
+    free(ast->call);
 }
 
 void free_argument_list(argument_list* list) {
+    int i;
+    for (i=0; i<list->num_args; i++) {
+        free(list->names[i]);
+    }
     free(list->names);
     free(list);
 }
@@ -73,7 +79,13 @@ void free_declaration(ASTNode* ast) {
     free(ast->declare);
 }
 
-// void free_number(ASTNode( i))
+void free_string_literal(ASTNode* ast) {
+    free(ast->string);
+}
+
+void free_number(ASTNode* ast) {
+    free(ast->string);
+}
 
 void free_ast(ASTNode* ast) {
     switch (ast->type) {
@@ -85,8 +97,12 @@ void free_ast(ASTNode* ast) {
         case NODE_IMPORT:        free_import(ast);        break;
         case NODE_IDENTIFIER:    free_identifier(ast);    break;
         case NODE_DECLARATION:   free_declaration(ast);   break;
-        // case NODE_NUMBER:        free_number(ast);        break;
-        default:                 assert("ASTNode type not declared" == 0);
+        case NODE_NUMBER:        free_number(ast);        break;
+        case NODE_STRING_LITERAL: free_string_literal(ast); break;
+        default: {
+            printf("Unknown type; %d\n", ast->type);
+            assert("ASTNode type not declared" == 0);
+        }
     }
     free(ast);
 }
