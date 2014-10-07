@@ -99,11 +99,25 @@ void render_function(ASTNode* ast, int indent) {
 }
 
 char* render_expression(ASTNode* expr) {
-    return (char*)expr;
+           if (expr->type == NODE_IDENTIFIER) {
+        return strdup(expr->string);
+    } else if (expr->type == NODE_NUMBER) {
+        return strdup(expr->string);
+    } else if (expr == NULL) {
+        return "NULL";
+    } else {
+        return (char*)expr;
+    }
 }
 
 char* render_function_call_to_string(ASTNode* ast) {
-    char* function = render_expression(ast->call->function);
+    char* function;
+    if (ast->call->function == NULL) {
+        function = strdup("NULL");
+    } else {
+        function = render_expression(ast->call->function);
+    }
+
     char* function_call = calloc(1024, sizeof(char*));
 
     char* arguments = "...";
@@ -116,7 +130,9 @@ char* render_function_call_to_string(ASTNode* ast) {
 
 void render_function_call(ASTNode* ast, int indent) {
     do_indent(indent);
-    printf("%s", render_function_call_to_string(ast));
+    char* call = render_function_call_to_string(ast);
+    printf("%s", call);
+    free(call);
 }
 
 
