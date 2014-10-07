@@ -11,7 +11,7 @@ int main(int argc, char const *argv[]) {
     }
 
     FILE* file;
-    file = fopen(argv[1], "r");
+    file = fopen(argv[1], "rb");
     if (!file) {
         perror("Couldn't open input file");
         return -1;

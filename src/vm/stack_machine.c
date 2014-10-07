@@ -159,7 +159,7 @@ int run_machine(stack_machine* mach) {
                     }
                 }
                 printf(" ]\n");
-                mach->pc++; assert(mach->pc >= 0);
+                mach->pc++;
                 break;
             }
             case SLEEP: {

@@ -48,7 +48,7 @@ SeaObject* get_variable(char* name, stack_frame* stack) {
 int run_function(ASTNode* func, ASTNode* program, callstack* cs) {
     assert(func->type == NODE_FUNCTION);
 
-    stack_frame* cur_frame = stack_push(cs);
+    stack_push(cs);
     int pc = 0;
 
     many_nodes* body = func->func->body;

@@ -13,7 +13,6 @@ void do_indent(int indent) {
     }
 }
 
-
 void render_raw_manynodes(many_nodes* nodes, int indent);
 char* render_expression(ASTNode* expr);
 
