@@ -44,9 +44,14 @@ dict* dict_create(int max_size) {
 
 
 static void put_entry(dict* d, dict_entry* entry) {
-    d->count++;
     entry->state = IN_USE;
     int idx = find(d, entry->key);
+
+    if (d->entries == NULL) {
+        // only increment contained count if we're adding something new
+        d->count++;
+    }
+
     d->entries[idx] = entry;
 }
 
