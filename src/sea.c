@@ -41,6 +41,8 @@ int execute_file(sea* s, FILE* file) {
         printf("An error occured during evaluation\n");
     }
 
+    free_ast(ast);
+
     // assert(0);
 
     return 0;

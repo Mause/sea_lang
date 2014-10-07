@@ -59,20 +59,10 @@ ASTNode* res;
 %%
 start_bits: {
                 res = create_empty_manynodes();
+                $$ = NULL;
             }
           | start_bits start {
-              ASTNode* new = create_ast_node();
-              new->type = NODE_MANYNODES;
-              new->nodes = calloc(1, sizeof(*$$->nodes));
-              int num_nodes = res->nodes->num_nodes;
-              new->nodes->num_nodes = num_nodes + 1;
-              new->nodes->nodes = calloc(new->nodes->num_nodes, sizeof(*new->nodes->nodes));
-              int i;
-              for (i=0; i<(new->nodes->num_nodes-1); i++) {
-                  new->nodes->nodes[i] = res->nodes->nodes[i];
-              }
-              new->nodes->nodes[new->nodes->num_nodes-1] = $2;
-              res = new;
+                res = append_to_manynodes(res, $2);
           };
 
 start: function
@@ -96,6 +86,9 @@ argument_declarations: {
                                $$->names[i] = $1->names[i];
                            }
                            $$->names[$$->num_args-1] = $2;
+
+                           free($1->names);
+                           free($1);
                        };
 argument_declaration: IDENTIFIER COMMA {$$ = $1;}
                     | IDENTIFIER       {$$ = $1;};

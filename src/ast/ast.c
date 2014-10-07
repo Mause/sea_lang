@@ -12,7 +12,10 @@ ASTNode* create_ast_node(void) {
 void free_ast(ASTNode* ast);
 
 void free_raw_manynodes(many_nodes* nodes) {
-    // free(nodes->nodes);
+    int i;
+    for (i=0; i<nodes->num_nodes; i++) {
+        free_ast(nodes->nodes[i]);
+    }
 }
 
 void free_forloop(ASTNode* ast) {
@@ -31,14 +34,22 @@ void free_manynodes(ASTNode* ast) {
 }
 
 void free_function_call(ASTNode* ast) {
-    // if (ast->call->function != NULL)
-    //     free_ast(ast->call->function);
-    // free_raw_manynodes(ast->call->arguments);
+    if (ast->call->function != NULL)
+        free_ast(ast->call->function);
+
+    if (ast->call->arguments != NULL) {
+        free_raw_manynodes(ast->call->arguments);
+    }
+}
+
+void free_argument_list(argument_list* list) {
+    free(list->names);
+    free(list);
 }
 
 void free_function(ASTNode* ast) {
     free(ast->func->name);
-    free(ast->func->args);
+    free_argument_list(ast->func->args);
     free_raw_manynodes(ast->func->body);
 }
 

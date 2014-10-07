@@ -27,6 +27,8 @@ int eval(ASTNode* ast) {
         stack
     );
 
+    stack_free(stack);
+
     return 0;
 }
 

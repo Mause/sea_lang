@@ -32,6 +32,16 @@ void stack_free_frame(stack_frame* frame) {
     free(frame);
 }
 
+void stack_free(callstack* cs) {
+    stack_frame* current = cs->top;
+
+    while (current != NULL) {
+        stack_frame* next = current->next;
+        stack_free_frame(current);
+        current = next;
+    }
+}
+
 
 stack_frame* stack_push(callstack* cs) {
     if (cs->top == NULL) {

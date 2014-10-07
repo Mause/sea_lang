@@ -23,7 +23,7 @@ ASTNode* create_assignment(char* ident, ASTNode* expr) {
    ASTNode* assignment = create_ast_node();
    assignment->type = NODE_ASSIGNMENT;
 
-   assignment->assign = malloc(sizeof(*assignment->assign));
+   assignment->assign = calloc(1, sizeof(*assignment->assign));
    assignment->assign->ident = strdup(ident);
    assignment->assign->expr = expr;
 
@@ -100,6 +100,8 @@ ASTNode* append_to_manynodes(ASTNode* manynodes, ASTNode* new_node) {
         new_many->nodes->nodes[i] = manynodes->nodes->nodes[i];
     }
     new_many->nodes->nodes[new_many->nodes->num_nodes-1] = new_node;
+
+    free(manynodes);
 
     return new_many;
 }
