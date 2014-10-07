@@ -16,17 +16,20 @@ void free_raw_manynodes(many_nodes* nodes) {
     for (i=0; i<nodes->num_nodes; i++) {
         free_ast(nodes->nodes[i]);
     }
+    free(nodes->nodes);
 }
 
 void free_forloop(ASTNode* ast) {
     free(ast->fl->iter_ident);
     free_ast(ast->fl->iterable);
     free_ast(ast->fl->body);
+    free(ast->fl);
 }
 
 void free_assignment(ASTNode* ast) {
     free(ast->assign->ident);
     free_ast(ast->assign->expr);
+    free(ast->assign);
 }
 
 void free_manynodes(ASTNode* ast) {
@@ -51,6 +54,7 @@ void free_function(ASTNode* ast) {
     free(ast->func->name);
     free_argument_list(ast->func->args);
     free_raw_manynodes(ast->func->body);
+    free(ast->func);
 }
 
 void free_import(ASTNode* ast) {
@@ -66,6 +70,7 @@ void free_declaration(ASTNode* ast) {
     if (ast->declare->expr != NULL) {
         free(ast->declare->expr);
     }
+    free(ast->declare);
 }
 
 // void free_number(ASTNode( i))
