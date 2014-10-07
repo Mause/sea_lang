@@ -66,6 +66,24 @@ ASTNode* create_declaration_from_assignment(ASTNode* assignment) {
 }
 
 
+ASTNode* create_number(char* string) {
+    ASTNode* number = create_ast_node();
+    number->type = NODE_NUMBER;
+    number->string = string; //strdup(string);
+
+    return number;
+}
+
+
+ASTNode* create_identifier(char* string) {
+    ASTNode* ident = create_ast_node();
+    ident->type = NODE_IDENTIFIER;
+    ident->string = string; //strdup(string);
+
+    return ident;
+}
+
+
 ASTNode* create_declaration(char* ident) {
     ASTNode* declaration = create_ast_node();
     declaration->type = NODE_DECLARATION;

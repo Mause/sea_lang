@@ -125,15 +125,11 @@ argument : expression COMMA | expression;
 
 
 expression: IDENTIFIER {
-                $$ = create_ast_node();
-                $$->type = NODE_IDENTIFIER;
-                $$->string = strdup($1);
+              $$ = create_identifier($1);
             }
           | NUMBER {
-                $$ = create_ast_node();
-                $$->type = NODE_NUMBER;
-                $$->string = strdup($1);
-            }
+            $$ = create_number($1);
+          }
 //          | expression '+' expression
 //          | expression '-' expression
 //          | expression '*' expression

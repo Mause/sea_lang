@@ -12,5 +12,7 @@ ASTNode* create_declaration(char* ident);
 ASTNode* append_to_manynodes(ASTNode* manynodes, ASTNode* new_node);
 ASTNode* create_empty_manynodes();
 ASTNode* create_forloop(char* ident, ASTNode* iterable, ASTNode* body);
+ASTNode* create_number(char* string);
+ASTNode* create_identifier(char* string);
 
 #endif
