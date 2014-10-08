@@ -66,6 +66,8 @@ bool dict_valid_entry(dict* d, int i) {
 
 
 void* dict_get(dict* d, char* key) {
+    if (d->count == 0) return NULL;
+
     dict_entry* entry = d->entries[find(d, key)];
 
     if (entry == NULL || entry->state == PREVIOUS_USED) {
@@ -77,6 +79,8 @@ void* dict_get(dict* d, char* key) {
 
 
 void* dict_remove(dict* d, char* key) {
+    if (d->count == 0) return NULL;
+
     d->count--;
     void* value = dict_get(d, key);
     d->entries[find(d, key)]->state = PREVIOUS_USED;
@@ -187,6 +191,8 @@ static int find(dict* d, char* key) {
 
 
 bool contains_key(dict* d, char* key) {
+    if (d->count == 0) return FALSE;
+
     dict_entry* entry = d->entries[find(d, key)];
 
     if (entry == NULL || entry->state != IN_USE) {
