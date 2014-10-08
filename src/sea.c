@@ -42,8 +42,7 @@ int execute_file(sea* s, FILE* file) {
     }
 
     free_ast(ast);
-
-    // assert(0);
+    yylex_destroy();
 
     return 0;
 }
