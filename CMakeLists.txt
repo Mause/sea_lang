@@ -41,16 +41,11 @@ add_library(libsea
     ${FLEX_SeaLexer_OUTPUTS}
 )
 set_target_properties(libsea PROPERTIES PREFIX "")
+target_link_libraries(libsea libdict)
 
 add_executable(test_dict src/dict/test_dict.c)
 target_link_libraries(test_dict libsea)
 
-add_executable(main src/main.c)
-target_link_libraries(main libsea)
+add_executable(sea src/main.c)
+target_link_libraries(sea libsea)
 
-add_executable(stack_machine
-    src/stack_machine.c
-    src/stack_machine/program.c
-    src/stack_machine/instruction.c
-)
-target_link_libraries(stack_machine libsea)
