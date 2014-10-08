@@ -95,23 +95,15 @@ ASTNode* create_empty_manynodes(void) {
 }
 
 ASTNode* append_to_manynodes(ASTNode* manynodes, ASTNode* new_node) {
-    ASTNode* new_many = create_ast_node(NODE_MANYNODES);
-    new_many->nodes = calloc(1, sizeof(*new_many->nodes));
+    manynodes->nodes->num_nodes++;
+    manynodes->nodes->nodes = realloc(
+        manynodes->nodes->nodes,
+        manynodes->nodes->num_nodes * sizeof(*manynodes->nodes->nodes)
+    );
 
-    new_many->nodes->num_nodes = manynodes->nodes->num_nodes + 1;
-    new_many->nodes->nodes = calloc(new_many->nodes->num_nodes, sizeof(*new_many->nodes->nodes));
+    manynodes->nodes->nodes[manynodes->nodes->num_nodes-1] = new_node;
 
-    int i;
-    for (i=0; i<(new_many->nodes->num_nodes-1); i++) {
-        new_many->nodes->nodes[i] = manynodes->nodes->nodes[i];
-    }
-    new_many->nodes->nodes[new_many->nodes->num_nodes-1] = new_node;
-
-    free(manynodes->nodes->nodes);
-    free(manynodes->nodes);
-    free(manynodes);
-
-    return new_many;
+    return manynodes;
 }
 
 ASTNode* create_forloop(char* ident, ASTNode* iterable, ASTNode* body) {
