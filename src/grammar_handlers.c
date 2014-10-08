@@ -6,8 +6,7 @@
 
 
 ASTNode* create_function(char* name, many_nodes* args, many_nodes* body) {
-    ASTNode* function = create_ast_node();
-    function->type = NODE_FUNCTION;
+    ASTNode* function = create_ast_node(NODE_FUNCTION);
     function->func = calloc(1, sizeof(*function->func));
     function->func->name = name;
     function->func->args = args;
@@ -20,8 +19,7 @@ ASTNode* create_function(char* name, many_nodes* args, many_nodes* body) {
 
 
 ASTNode* create_assignment(char* ident, ASTNode* expr) {
-   ASTNode* assignment = create_ast_node();
-   assignment->type = NODE_ASSIGNMENT;
+   ASTNode* assignment = create_ast_node(NODE_ASSIGNMENT);
 
    assignment->assign = calloc(1, sizeof(*assignment->assign));
    assignment->assign->ident = ident;
@@ -31,8 +29,7 @@ ASTNode* create_assignment(char* ident, ASTNode* expr) {
 }
 
 ASTNode* create_function_call(ASTNode* function, ASTNode* arguments) {
-    ASTNode* function_call = create_ast_node();
-    function_call->type = NODE_FUNCTION_CALL;
+    ASTNode* function_call = create_ast_node(NODE_FUNCTION_CALL);
     function_call->call = calloc(1, sizeof(*function_call->call));
 
     function_call->call->function = function;
@@ -44,8 +41,7 @@ ASTNode* create_function_call(ASTNode* function, ASTNode* arguments) {
 }
 
 ASTNode* create_import(char* ident) {
-    ASTNode* import = create_ast_node();
-    import->type = NODE_IMPORT;
+    ASTNode* import = create_ast_node(NODE_IMPORT);
     import->string = ident;
     printf("Import %s\n", ident);
 
@@ -54,8 +50,7 @@ ASTNode* create_import(char* ident) {
 
 
 ASTNode* create_declaration_from_assignment(ASTNode* assignment) {
-    ASTNode* declaration = create_ast_node();
-    declaration->type = NODE_DECLARATION;
+    ASTNode* declaration = create_ast_node(NODE_DECLARATION);
     declaration->declare = calloc(1, sizeof(*declaration->declare));
     declaration->declare->ident = assignment->assign->ident;
     declaration->declare->expr = assignment->assign->expr;
@@ -68,8 +63,7 @@ ASTNode* create_declaration_from_assignment(ASTNode* assignment) {
 
 
 ASTNode* create_number(char* string) {
-    ASTNode* number = create_ast_node();
-    number->type = NODE_NUMBER;
+    ASTNode* number = create_ast_node(NODE_NUMBER);
     number->string = string; //strdup(string);
 
     return number;
@@ -77,8 +71,7 @@ ASTNode* create_number(char* string) {
 
 
 ASTNode* create_identifier(char* string) {
-    ASTNode* ident = create_ast_node();
-    ident->type = NODE_IDENTIFIER;
+    ASTNode* ident = create_ast_node(NODE_IDENTIFIER);
     ident->string = string; //strdup(string);
 
     return ident;
@@ -86,8 +79,7 @@ ASTNode* create_identifier(char* string) {
 
 
 ASTNode* create_declaration(char* ident) {
-    ASTNode* declaration = create_ast_node();
-    declaration->type = NODE_DECLARATION;
+    ASTNode* declaration = create_ast_node(NODE_DECLARATION);
     declaration->declare = calloc(1, sizeof(*declaration->declare));
     declaration->declare->ident = ident;
     declaration->declare->expr = NULL;
@@ -97,8 +89,7 @@ ASTNode* create_declaration(char* ident) {
 
 
 ASTNode* create_empty_manynodes(void) {
-    ASTNode* manynodes = create_ast_node();
-    manynodes->type = NODE_MANYNODES;
+    ASTNode* manynodes = create_ast_node(NODE_MANYNODES);
     manynodes->nodes = calloc(1, sizeof(*manynodes->nodes));
     manynodes->nodes->num_nodes = 0;
     manynodes->nodes->nodes = NULL;
@@ -107,8 +98,7 @@ ASTNode* create_empty_manynodes(void) {
 }
 
 ASTNode* append_to_manynodes(ASTNode* manynodes, ASTNode* new_node) {
-    ASTNode* new_many = create_ast_node();
-    new_many->type = NODE_MANYNODES;
+    ASTNode* new_many = create_ast_node(NODE_MANYNODES);
     new_many->nodes = calloc(1, sizeof(*new_many->nodes));
 
     new_many->nodes->num_nodes = manynodes->nodes->num_nodes + 1;
@@ -128,8 +118,7 @@ ASTNode* append_to_manynodes(ASTNode* manynodes, ASTNode* new_node) {
 }
 
 ASTNode* create_forloop(char* ident, ASTNode* iterable, ASTNode* body) {
-    ASTNode* forloop = create_ast_node();
-    forloop->type = NODE_FORLOOP;
+    ASTNode* forloop = create_ast_node(NODE_FORLOOP);
     forloop->fl = calloc(1, sizeof(*forloop->fl));
     forloop->fl->iter_ident = ident;
     forloop->fl->iterable = iterable;

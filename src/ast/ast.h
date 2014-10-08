@@ -3,7 +3,7 @@
 
 struct forloop_t;
 
-enum NodeType {
+typedef enum {
     NODE_FORLOOP,
     NODE_ASSIGNMENT,
     NODE_MANYNODES,
@@ -14,7 +14,7 @@ enum NodeType {
     NODE_NUMBER,
     NODE_STRING_LITERAL,
     NODE_DECLARATION
-};
+} NodeType;
 
 struct ASTNode_t;
 
@@ -51,7 +51,7 @@ typedef struct {
 } function;
 
 typedef struct ASTNode_t {
-    int type;
+    NodeType type;
     union {
         forloop* fl;
         char* string;
@@ -63,7 +63,7 @@ typedef struct ASTNode_t {
     };
 } ASTNode;
 
-ASTNode* create_ast_node();
+ASTNode* create_ast_node(NodeType type);
 char* repr(int type);
 
 #endif
