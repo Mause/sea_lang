@@ -47,7 +47,7 @@ static void put_entry(dict* d, dict_entry* entry) {
     entry->state = IN_USE;
     int idx = find(d, entry->key);
 
-    if (d->entries == NULL) {
+    if (!dict_valid_entry(d, idx)) {
         // only increment contained count if we're adding something new
         d->count++;
     }
