@@ -88,8 +88,6 @@ ASTNode* create_declaration(char* ident) {
 ASTNode* create_empty_manynodes(void) {
     ASTNode* manynodes = create_ast_node(NODE_MANYNODES);
     manynodes->nodes = calloc(1, sizeof(*manynodes->nodes));
-    manynodes->nodes->num_nodes = 0;
-    manynodes->nodes->nodes = NULL;
 
     return manynodes;
 }
