@@ -109,8 +109,8 @@ forloop: FOR IDENTIFIER IN expression OPEN_CURLY body CLOSE_CURLY {
 };
 
 
-arguments: { $$ = NULL; }
-         | arguments argument { free_ast($2); };
+arguments:                    { $$ = create_empty_manynodes(); }
+         | arguments argument { $$ = append_to_manynodes($1, $2); };
 argument : expression COMMA | expression;
 
 

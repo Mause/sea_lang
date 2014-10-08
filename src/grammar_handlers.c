@@ -34,13 +34,11 @@ ASTNode* create_function_call(ASTNode* function, ASTNode* arguments) {
     ASTNode* function_call = create_ast_node();
     function_call->type = NODE_FUNCTION_CALL;
     function_call->call = calloc(1, sizeof(*function_call->call));
+
     function_call->call->function = function;
-    if (arguments != NULL) {
-        function_call->call->arguments = arguments->nodes;
-    } else {
-        function_call->call->arguments = NULL;
-    }
-    printf("%s()\n", function);
+
+    function_call->call->arguments = arguments->nodes;
+    free(arguments);
 
     return function_call;
 }
