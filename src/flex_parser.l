@@ -26,7 +26,7 @@ for                     return FOR;
 #                       return HASH;
 \"                      return QUOTE;
 
-[a-zA-Z_][_a-zA-Z0-9]*    {
+[a-zA-Z_][_a-zA-Z0-9]*  {
                             yylval.string=strdup(yytext);
                             return IDENTIFIER;
                         }

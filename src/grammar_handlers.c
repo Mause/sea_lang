@@ -12,8 +12,6 @@ ASTNode* create_function(char* name, many_nodes* args, many_nodes* body) {
     function->func->args = args;
     function->func->body = body;
 
-    printf("func %s() {}\n", name);
-
     return function;
 }
 
@@ -43,7 +41,6 @@ ASTNode* create_function_call(ASTNode* function, ASTNode* arguments) {
 ASTNode* create_import(char* ident) {
     ASTNode* import = create_ast_node(NODE_IMPORT);
     import->string = ident;
-    printf("Import %s\n", ident);
 
     return import;
 }
@@ -64,7 +61,7 @@ ASTNode* create_declaration_from_assignment(ASTNode* assignment) {
 
 ASTNode* create_number(char* string) {
     ASTNode* number = create_ast_node(NODE_NUMBER);
-    number->string = string; //strdup(string);
+    number->string = string;
 
     return number;
 }
@@ -72,7 +69,7 @@ ASTNode* create_number(char* string) {
 
 ASTNode* create_identifier(char* string) {
     ASTNode* ident = create_ast_node(NODE_IDENTIFIER);
-    ident->string = string; //strdup(string);
+    ident->string = string;
 
     return ident;
 }

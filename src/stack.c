@@ -12,18 +12,6 @@ stack_frame* stack_pop(callstack* cs) {
     stack_free_frame(old_top);
 
     return cs->top;
-
-    // stack_frame *current = sf;
-
-    // while (current->next->next != NULL) {
-    //     current = current->next;
-    // }
-
-    // stack_frame* to_cleanup = current->next;
-
-    // current->next = NULL;
-
-    // return to_cleanup;
 }
 
 
