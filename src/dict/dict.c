@@ -81,8 +81,12 @@ void* dict_get(dict* d, char* key) {
 void* dict_remove(dict* d, char* key) {
     if (d->count == 0) return NULL;
 
-    d->count--;
     void* value = dict_get(d, key);
+    if (value == NULL) {
+        return NULL;
+    }
+
+    d->count--;
     d->entries[find(d, key)]->state = PREVIOUS_USED;
 
     resizeIfNeeded(d);
