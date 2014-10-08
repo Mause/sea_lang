@@ -19,14 +19,18 @@ flex_target(SeaLexer
 
 add_flex_bison_dependency(SeaLexer SeaParser)
 
+add_library(libdict
+    src/dict/dict.c
+    src/dict/dict_entry.c
+    src/dict/primes.c
+    src/object/none.c
+)
+set_target_properties(libdict PROPERTIES PREFIX "")
 
 add_library(libsea
     src/ast/ast.c
     src/ast/render_ast.c
     src/compile.c
-    src/dict/dict.c
-    src/dict/dict_entry.c
-    src/dict/primes.c
     src/eval.c
     src/object/none.c
     src/grammar_handlers.c
