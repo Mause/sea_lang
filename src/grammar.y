@@ -71,6 +71,8 @@ start: function
 
 function: FUNC IDENTIFIER OPEN_BRACE argument_declarations CLOSE_BRACE curly_scope {
     $$ = create_function($2, $4->nodes, $6->nodes);
+    free($4);
+    free($6);
 };
 
 argument_declarations: {
