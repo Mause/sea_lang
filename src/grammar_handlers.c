@@ -24,7 +24,7 @@ ASTNode* create_assignment(char* ident, ASTNode* expr) {
    assignment->type = NODE_ASSIGNMENT;
 
    assignment->assign = calloc(1, sizeof(*assignment->assign));
-   assignment->assign->ident = strdup(ident);
+   assignment->assign->ident = ident;
    assignment->assign->expr = expr;
 
    return assignment;
@@ -91,7 +91,7 @@ ASTNode* create_declaration(char* ident) {
     ASTNode* declaration = create_ast_node();
     declaration->type = NODE_DECLARATION;
     declaration->declare = calloc(1, sizeof(*declaration->declare));
-    declaration->declare->ident = strdup(ident);
+    declaration->declare->ident = ident;
     declaration->declare->expr = NULL;
 
     return declaration;
@@ -133,7 +133,7 @@ ASTNode* create_forloop(char* ident, ASTNode* iterable, ASTNode* body) {
     ASTNode* forloop = create_ast_node();
     forloop->type = NODE_FORLOOP;
     forloop->fl = calloc(1, sizeof(*forloop->fl));
-    forloop->fl->iter_ident = strdup(ident);
+    forloop->fl->iter_ident = ident;
     forloop->fl->iterable = iterable;
     forloop->fl->body = body;
 
