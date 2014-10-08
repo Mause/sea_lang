@@ -3,7 +3,7 @@
 
 #include "src/ast/ast.h"
 
-ASTNode* create_function(char* name, struct argument_list* args, many_nodes* body);
+ASTNode* create_function(char* name, many_nodes* args, many_nodes* body);
 ASTNode* create_assignment(char* ident, ASTNode* expr);
 ASTNode* create_function_call(ASTNode* function, ASTNode* arguments);
 ASTNode* create_import(char* ident);

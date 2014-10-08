@@ -39,11 +39,6 @@ typedef struct {
     struct ASTNode_t** nodes;
 } many_nodes;
 
-typedef struct argument_list {
-    int num_args;
-    char** names;
-} argument_list;
-
 typedef struct {
     struct ASTNode_t* function;
     many_nodes* arguments;
@@ -51,7 +46,7 @@ typedef struct {
 
 typedef struct {
     char* name;
-    argument_list* args;
+    many_nodes* args;
     many_nodes* body;
 } function;
 

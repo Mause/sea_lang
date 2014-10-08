@@ -47,18 +47,9 @@ void free_function_call(ASTNode* ast) {
     free(ast->call);
 }
 
-void free_argument_list(argument_list* list) {
-    int i;
-    for (i=0; i<list->num_args; i++) {
-        free(list->names[i]);
-    }
-    free(list->names);
-    free(list);
-}
-
 void free_function(ASTNode* ast) {
     free(ast->func->name);
-    free_argument_list(ast->func->args);
+    free_raw_manynodes(ast->func->args);
     free_raw_manynodes(ast->func->body);
     free(ast->func);
 }

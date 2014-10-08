@@ -5,7 +5,7 @@
 #include "src/grammar_handlers.h"
 
 
-ASTNode* create_function(char* name, struct argument_list* args, many_nodes* body) {
+ASTNode* create_function(char* name, many_nodes* args, many_nodes* body) {
     ASTNode* function = create_ast_node();
     function->type = NODE_FUNCTION;
     function->func = calloc(1, sizeof(*function->func));

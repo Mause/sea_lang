@@ -65,13 +65,13 @@ void render_import(ASTNode* ast, int indent) {
 }
 
 
-char* render_argument_list(argument_list* list) {
+char* render_argument_list(many_nodes* list) {
     char *buffer = calloc(1024, sizeof(char*));
     int i;
-    for(i=0; i < list->num_args; i++) {
-        strcat(buffer, list->names[i]);
+    for(i=0; i < list->num_nodes; i++) {
+        strcat(buffer, list->nodes[i]->string);
 
-        if (i != (list->num_args-1)) {
+        if (i != (list->num_nodes-1)) {
             strcat(buffer, ", ");
         }
     }

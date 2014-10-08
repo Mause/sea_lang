@@ -23,11 +23,9 @@ ASTNode* res;
 
 %union {
     char* string;
-    struct argument_list* arguments;
     struct ASTNode_t* node;
 }
 
-%type <arguments> argument_declarations;
 %type <node> forloop
              arguments
              assignment
@@ -43,8 +41,9 @@ ASTNode* res;
              statements
              curly_scope
              argument
+             argument_declaration
+             argument_declarations
              ;
-%type <string> argument_declaration;// string;
 
 %token <string>
     IDENTIFIER NUMBER WHATEVER
@@ -71,28 +70,16 @@ start: function
      | import;
 
 function: FUNC IDENTIFIER OPEN_BRACE argument_declarations CLOSE_BRACE curly_scope {
-    $$ = create_function($2, $4, $6->nodes);
+    $$ = create_function($2, $4->nodes, $6->nodes);
 };
 
 argument_declarations: {
-                           $$ = calloc(1, sizeof(*$$));
-                           $$->names = NULL;
-                           $$->num_args = 0;
+                          $$ = create_empty_manynodes();
                        } | argument_declarations argument_declaration {
-                           $$ = calloc(1, sizeof(*$$));
-                           $$->num_args = $1->num_args + 1;
-                           $$->names = calloc($$->num_args, sizeof(char*));
-                           int i;
-                           for (i=0; i<($$->num_args-1); i++) {
-                               $$->names[i] = $1->names[i];
-                           }
-                           $$->names[$$->num_args-1] = $2;
-
-                           free($1->names);
-                           free($1);
+                          $$ = append_to_manynodes($1, $2);
                        };
-argument_declaration: IDENTIFIER COMMA {$$ = $1;}
-                    | IDENTIFIER       {$$ = $1;};
+argument_declaration: IDENTIFIER COMMA { $$ = create_identifier($1); }
+                    | IDENTIFIER       { $$ = create_identifier($1); };
 
 curly_scope: OPEN_CURLY body CLOSE_CURLY {$$ = $2;};
 body: statements;
