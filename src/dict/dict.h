@@ -15,7 +15,7 @@ void  dict_set(dict* d, char* key, void* value);
 void* dict_get(dict* d, char* key);
 void* dict_remove(dict* d, char* key);
 void dict_repr(dict* d);
-void dict_keys(dict* d);
+char** dict_keys(dict* d);
 bool dict_valid_entry(dict* d, int i);
 
 #endif

@@ -113,15 +113,29 @@ void dict_repr(dict* d) {
 }
 
 
-void dict_keys(dict* d) {
-    int i;
+/**
+ * returns a sentinel delimited char** array
+ */
+char** dict_keys(dict* d) {
+    int i, idx=0;
+
+    char** keys = calloc(d->max_size + 1, sizeof(char*));
+
     for (i=0; i<d->max_size; i++) {
         dict_entry* cur_entry = d->entries[i];
+
         if (cur_entry != NULL && cur_entry->state == IN_USE) {
-            printf("%s, ", cur_entry->key);
+            keys[idx++] = cur_entry->key;
         }
     }
-    printf("\n");
+
+    char** new_keys = realloc(
+        keys,
+        (idx + 1) * // leave a sentinal in place
+        sizeof(char*)
+    );
+
+    return new_keys;
 }
 
 
