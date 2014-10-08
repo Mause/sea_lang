@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 project(sea_lang)
 
-set(CMAKE_C_FLAGS "-g ${CMAKE_C_FLAGS}")
+set(CMAKE_C_FLAGS "-g -Werror ${CMAKE_C_FLAGS}")
 
 find_package(BISON)
 find_package(FLEX)
