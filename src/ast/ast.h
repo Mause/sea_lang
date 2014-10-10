@@ -1,6 +1,8 @@
 #ifndef AST_H
 #define AST_H
 
+#include "build/parser/grammar.h"
+
 struct forloop_t;
 
 typedef enum {
@@ -13,7 +15,8 @@ typedef enum {
     NODE_IDENTIFIER,
     NODE_NUMBER,
     NODE_STRING_LITERAL,
-    NODE_DECLARATION
+    NODE_DECLARATION,
+    NODE_ERROR
 } NodeType;
 
 struct ASTNode_t;
@@ -50,6 +53,11 @@ typedef struct {
     many_nodes* body;
 } function;
 
+typedef struct {
+    char* error_location;
+    YYLTYPE lloc;
+} error;
+
 typedef struct ASTNode_t {
     NodeType type;
     union {
@@ -60,10 +68,12 @@ typedef struct ASTNode_t {
         function_call* call;
         function* func;
         declaration* declare;
+        error* err;
     };
 } ASTNode;
 
 ASTNode* create_ast_node(NodeType type);
 char* repr(int type);
+many_nodes* grab_errors(ASTNode* ast);
 
 #endif

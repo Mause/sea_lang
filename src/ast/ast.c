@@ -1,8 +1,10 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include <assert.h>
 
 #include "src/ast/ast.h"
+#include "src/parser/grammar_handlers.h"
 
 ASTNode* create_ast_node(NodeType type) {
     ASTNode* node = calloc(1, sizeof(*node));
@@ -90,6 +92,7 @@ void free_ast(ASTNode* ast) {
         case NODE_DECLARATION:   free_declaration(ast);   break;
         case NODE_NUMBER:        free_number(ast);        break;
         case NODE_STRING_LITERAL: free_string_literal(ast); break;
+        case NODE_ERROR:         break;
         default: {
             printf("Unknown type; %d\n", ast->type);
             assert("ASTNode type not declared" == 0);
@@ -112,4 +115,42 @@ char* repr(int type) {
         case NODE_DECLARATION:   return "NODE_DECLARATION";
         default:                 assert(0);
     }
+}
+
+many_nodes* grab_errors(ASTNode* ast) {
+    ASTNode* errors = create_empty_manynodes();
+
+    int i;
+
+    for (i=0; i<ast->nodes->num_nodes; i++) {
+        ASTNode* cur_node = ast->nodes->nodes[i];
+
+        switch(cur_node->type) {
+        case NODE_MANYNODES: {
+            many_nodes* to_add = grab_errors(cur_node);
+
+            errors->nodes->num_nodes += to_add->num_nodes;
+            errors->nodes->nodes = realloc(
+                errors->nodes->nodes,
+                sizeof(*errors->nodes->nodes)
+            );
+
+            ASTNode* add_at_pos = errors->nodes->nodes[errors->nodes->num_nodes - to_add->num_nodes];
+            assert(add_at_pos == NULL);
+            memcpy(
+                add_at_pos,
+                to_add->nodes,
+                to_add->num_nodes * sizeof(*to_add->nodes)
+            );
+
+        }
+        case NODE_ERROR: {
+            errors = append_to_manynodes(errors, cur_node);
+        }
+        }
+    }
+
+    many_nodes* errors_actual = errors->nodes;
+    free(errors);
+    return errors_actual;
 }

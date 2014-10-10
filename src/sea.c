@@ -33,6 +33,26 @@ int execute_file(sea* s, FILE* file) {
     render_ast(ast, -1);
     printf("\n---------------------------\n");
 
+    many_nodes* errors = grab_errors(ast);
+    printf("%d errors\n", errors->num_nodes);
+    int i;
+    for (i=0; i<errors->num_nodes; i++) {
+        error* err = errors->nodes[i]->err;
+        printf("location: \"%s\"\n", err->error_location);
+        printf(
+            "first_line: %d, first_column: %d, last_line: %d, last_column: %d\n",
+            err->lloc.first_line,
+            err->lloc.first_column,
+            err->lloc.last_line,
+            err->lloc.last_column
+        );
+        free(err);
+    }
+    free(errors->nodes);
+    free(errors);
+    printf("\n");
+    // free_raw_manynodes(errors);
+
     int stat = eval(ast);
 
     if (stat != 0) {

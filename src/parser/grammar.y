@@ -7,6 +7,7 @@
 #include "src/ast/ast.h"
 #include "src/parser/grammar_handlers.h"
 
+#undef YYDEBUG
 #define YYDEBUG 1
 
 void yyerror(const char *str) {
@@ -66,7 +67,8 @@ start_bits: {
 
 start: function
      //| comment
-     | import;
+     | import
+     | error { extern char*yytext; $$ = create_error(yytext, yylloc); };
 
 function: FUNC IDENTIFIER OPEN_BRACE argument_declarations CLOSE_BRACE curly_scope {
     $$ = create_function($2, $4->nodes, $6->nodes);

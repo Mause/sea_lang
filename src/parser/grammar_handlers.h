@@ -2,6 +2,7 @@
 #define GRAMMAR_HANDLERS_H
 
 #include "src/ast/ast.h"
+#include "build/parser/grammar.h"
 
 ASTNode* create_function(char* name, many_nodes* args, many_nodes* body);
 ASTNode* create_assignment(char* ident, ASTNode* expr);
@@ -14,5 +15,6 @@ ASTNode* create_empty_manynodes();
 ASTNode* create_forloop(char* ident, ASTNode* iterable, ASTNode* body);
 ASTNode* create_number(char* string);
 ASTNode* create_identifier(char* string);
+ASTNode* create_error(char* yytext, struct YYLTYPE lloc);
 
 #endif
