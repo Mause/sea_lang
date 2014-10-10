@@ -15,7 +15,10 @@ void yyerror(const char *str) {
 
 ASTNode* res;
 
+#define YYLEX_PARAM &yylval, &yylloc
 %}
+
+%locations
 
 %union {
     char* string;

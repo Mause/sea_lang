@@ -10,7 +10,7 @@
 \{                      return OPEN_CURLY;
 \}                      return CLOSE_CURLY;
 ;                       return SEMICOLON;
-\n                      /*;return NEWLINE;*/
+\n                      { yylloc.last_line++; };
 [ \t]+                  /* ignore whitespace */;
 
 \)                      return CLOSE_BRACE;
