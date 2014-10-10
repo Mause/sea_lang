@@ -9,12 +9,12 @@ find_package(FLEX)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 bison_target(SeaParser
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/grammar.y
-    ${CMAKE_CURRENT_BINARY_DIR}/grammar.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/parser/grammar.y
+    ${CMAKE_CURRENT_BINARY_DIR}/parser/grammar.c
 )
 flex_target(SeaLexer
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/flex_parser.l
-    ${CMAKE_CURRENT_BINARY_DIR}/flex_parser.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/parser/flex_parser.l
+    ${CMAKE_CURRENT_BINARY_DIR}/parser/flex_parser.c
 )
 
 add_flex_bison_dependency(SeaLexer SeaParser)
@@ -33,7 +33,7 @@ add_library(libsea
     src/compile.c
     src/eval.c
     src/object/none.c
-    src/grammar_handlers.c
+    src/parser/grammar_handlers.c
     src/sea.c
     src/stack.c
 

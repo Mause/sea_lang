@@ -3,7 +3,7 @@
 #include <assert.h>
 #include <stdio.h>
 
-#include "src/grammar_handlers.h"
+#include "./grammar_handlers.h"
 
 
 ASTNode* create_function(char* name, many_nodes* args, many_nodes* body) {

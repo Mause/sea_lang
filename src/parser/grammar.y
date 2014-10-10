@@ -5,7 +5,7 @@
 #include <assert.h>
 
 #include "src/ast/ast.h"
-#include "src/grammar_handlers.h"
+#include "src/parser/grammar_handlers.h"
 
 #define YYDEBUG 1
 

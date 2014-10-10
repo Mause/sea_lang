@@ -1,6 +1,6 @@
 %{
 #include <stdio.h>
-#include "build/grammar.h"
+#include "build/parser/grammar.h"
 %}
 
 %option noyywrap

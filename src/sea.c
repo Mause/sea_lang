@@ -3,7 +3,7 @@
 #include <assert.h>
 
 #include "src/sea.h"
-#include "build/grammar.h"
+#include "build/parser/grammar.h"
 
 #include "src/ast/ast.h"
 
