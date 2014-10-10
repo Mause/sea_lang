@@ -50,12 +50,10 @@ void render_manynodes(ASTNode* ast, int indent) {
 
 void render_raw_manynodes(many_nodes* nodes, int indent) {
     int i;
-    do_indent(indent);
 
     for (i=0; i<nodes->num_nodes; i++) {
         render_ast(nodes->nodes[i], indent+1);
     }
-    printf("\n");
 }
 
 
@@ -110,6 +108,24 @@ char* render_expression(ASTNode* expr) {
     }
 }
 
+char* render_expression_list(many_nodes* expr_list) {
+    char* buffer = calloc(1024, sizeof(char*));
+
+    int i;
+
+    for (i=0; i<expr_list->num_nodes; i++) {
+        char* sub_expr = render_expression(expr_list->nodes[i]);
+        strcat(buffer, sub_expr);
+        free(sub_expr);
+
+        if (i != (expr_list->num_nodes-1)) {
+            strcat(buffer, ", ");
+        }
+    }
+
+    return buffer;
+}
+
 char* render_function_call_to_string(ASTNode* ast) {
     char* function;
     if (ast->call->function == NULL) {
@@ -119,11 +135,12 @@ char* render_function_call_to_string(ASTNode* ast) {
     }
 
     char* function_call = calloc(1024, sizeof(char*));
+    char* arguments = render_expression_list(ast->call->arguments);
 
-    char* arguments = "...";
     sprintf(function_call, "%s(%s);", function, arguments);
 
     free(function);
+    free(arguments);
 
     return function_call;
 }
@@ -131,7 +148,7 @@ char* render_function_call_to_string(ASTNode* ast) {
 void render_function_call(ASTNode* ast, int indent) {
     do_indent(indent);
     char* call = render_function_call_to_string(ast);
-    printf("%s", call);
+    printf("%s\n", call);
     free(call);
 }
 
