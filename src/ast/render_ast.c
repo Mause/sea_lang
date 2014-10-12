@@ -14,17 +14,16 @@ void do_indent(int indent) {
 }
 
 void render_raw_manynodes(many_nodes* nodes, int indent);
+void render_braced_manynodes(many_nodes* nodes, int indent);
 char* render_expression(ASTNode* expr);
 
 void render_forloop(ASTNode* ast, int indent) {
     forloop* fl = ast->fl;
 
-    do_indent(indent); printf("for %s in whatever {\n", fl->iter_ident);
+    do_indent(indent);
+    printf("for %s in whatever", fl->iter_ident);
 
-    render_ast(fl->body, indent);
-
-    do_indent(indent); printf("}\n");
-
+    render_braced_manynodes(fl->body->nodes, indent);
 }
 
 
@@ -45,6 +44,13 @@ void render_declaration(ASTNode* ast, int indent) {
 void render_manynodes(ASTNode* ast, int indent) {
     assert(ast->type == NODE_MANYNODES);
     render_raw_manynodes(ast->nodes, indent);
+}
+
+
+void render_braced_manynodes(many_nodes* nodes, int indent) {
+    printf(" { %d\n", nodes->num_nodes);
+    render_raw_manynodes(nodes, indent);
+    do_indent(indent); printf("}\n");
 }
 
 
@@ -83,17 +89,14 @@ void render_function(ASTNode* ast, int indent) {
 
     printf("\n");
     do_indent(indent); printf(
-        "func %s(%s) { %d\n",
+        "func %s(%s)",
         ast->func->name,
-        args,
-        ast->func->body->num_nodes
+        args
     );
 
     free(args);
 
-    render_raw_manynodes(ast->func->body, indent);
-
-    do_indent(indent); printf("}\n");
+    render_braced_manynodes(ast->func->body, indent);
 }
 
 char* render_expression(ASTNode* expr) {
