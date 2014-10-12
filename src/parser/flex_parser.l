@@ -5,6 +5,8 @@
 
 %option noyywrap
 
+%x COMMENT
+
 %%
 [0-9]+                  return NUMBER;
 \{                      return OPEN_CURLY;
@@ -23,7 +25,9 @@ for                     return FOR;
 
 ,                       return COMMA;
 =                       return EQUALS;
-#                       return HASH;
+<INITIAL>#              BEGIN(COMMENT);
+<COMMENT>"\n"           BEGIN(INITIAL);
+<COMMENT>.              {};
 \"                      return QUOTE;
 
 [a-zA-Z_][_a-zA-Z0-9]*  {
