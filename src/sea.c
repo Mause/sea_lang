@@ -18,6 +18,41 @@ void free_sea(sea* s) {
     free(s);
 }
 
+bool show_errors(ASTNode* ast, FILE* file) {
+    many_nodes* errors = grab_errors(ast);
+
+    int i;
+    for (i=0; i<errors->num_nodes; i++) {
+        error* err = errors->nodes[i]->err;
+
+        rewind(file);
+
+        int j;
+        char buffer[1024];
+        for (j=0; j<err->lloc.last_line; j++) {
+            fgets(buffer, 1024, file);
+        }
+
+        printf("Syntax error on line %d:", err->lloc.last_line);
+        if (err->message != NULL) printf(" %s\n", err->message);
+        else                      printf("\n");
+
+        strtok(buffer, "\n");
+        printf("\t%s\n", buffer);
+        printf("\t^\n");
+
+        free(err);
+    }
+
+    int was_errors = errors->num_nodes != 0;
+
+    free(errors->nodes);
+    free(errors);
+
+    printf("\n");
+
+    return was_errors;
+}
 
 int execute_file(sea* s, FILE* file) {
     extern FILE* yyin;
@@ -33,25 +68,8 @@ int execute_file(sea* s, FILE* file) {
     render_ast(ast, -1);
     printf("\n---------------------------\n");
 
-    many_nodes* errors = grab_errors(ast);
-    printf("%d errors\n", errors->num_nodes);
-    int i;
-    for (i=0; i<errors->num_nodes; i++) {
-        error* err = errors->nodes[i]->err;
-        printf("location: \"%s\"\n", err->error_location);
-        printf(
-            "first_line: %d, first_column: %d, last_line: %d, last_column: %d\n",
-            err->lloc.first_line,
-            err->lloc.first_column,
-            err->lloc.last_line,
-            err->lloc.last_column
-        );
-        free(err);
-    }
-    free(errors->nodes);
-    free(errors);
-    printf("\n");
-    // free_raw_manynodes(errors);
+    bool was_errors = show_errors(ast, file);
+    if (was_errors) return -1;
 
     int stat = eval(ast);
 
