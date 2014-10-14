@@ -15,6 +15,6 @@ ASTNode* create_empty_manynodes();
 ASTNode* create_forloop(char* ident, ASTNode* iterable, ASTNode* body);
 ASTNode* create_number(char* string);
 ASTNode* create_identifier(char* string);
-ASTNode* create_error(char* yytext, struct YYLTYPE lloc);
+ASTNode* create_error(char* yytext, struct YYLTYPE lloc, char* message);
 
 #endif

@@ -56,6 +56,7 @@ typedef struct {
 typedef struct {
     char* error_location;
     YYLTYPE lloc;
+    char* message;
 } error;
 
 typedef struct ASTNode_t {

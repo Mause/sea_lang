@@ -115,12 +115,13 @@ ASTNode* create_forloop(char* ident, ASTNode* iterable, ASTNode* body) {
     return forloop;
 }
 
-ASTNode* create_error(char* yytext, struct YYLTYPE lloc) {
+ASTNode* create_error(char* yytext, struct YYLTYPE lloc, char* message) {
     ASTNode* err = create_ast_node(NODE_ERROR);
 
     err->err = calloc(1, sizeof(*err->err));
-    err->err->error_location = yytext;
+    err->err->error_location = strdup(yytext);
     err->err->lloc = lloc;
+    err->err->message = message;
 
     return err;
 }

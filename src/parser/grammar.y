@@ -67,7 +67,7 @@ start_bits: {
 
 start: function
      | import
-     | error { extern char*yytext; $$ = create_error(yytext, yylloc); };
+     | error { extern char*yytext; $$ = create_error(yytext, yylloc, NULL); };
 
 function: FUNC IDENTIFIER OPEN_BRACE argument_declarations CLOSE_BRACE curly_scope {
     $$ = create_function($2, $4->nodes, $6->nodes);
