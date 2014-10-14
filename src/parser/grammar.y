@@ -66,7 +66,6 @@ start_bits: {
           };
 
 start: function
-     //| comment
      | import
      | error { extern char*yytext; $$ = create_error(yytext, yylloc); };
 
@@ -135,5 +134,4 @@ function_call: expression OPEN_BRACE arguments CLOSE_BRACE {
     $$ = create_function_call($1, $3);
 };
 
-//comment: HASH WHATEVER NEWLINE;
 %%
