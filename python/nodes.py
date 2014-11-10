@@ -25,13 +25,11 @@ class NodeMeta(type):
 
         body = [
             ast.Assign(
-                targets=[
-                    ast.Attribute(
-                        value=ast.Name(id='self', ctx=ast.Load()),
-                        attr=arg, ctx=ast.Store()
-                    )
-                ],
-                value=ast.Name(id=arg, ctx=ast.Load())
+                [ast.Attribute(
+                    ast.Name('self', ast.Load()),
+                    arg, ast.Store()
+                )],
+                ast.Name(arg, ast.Load())
             )
             for arg in cls._fields
         ]
@@ -43,7 +41,7 @@ class NodeMeta(type):
         )
 
         return ast.fix_missing_locations(
-            ast.Module(body=[function])
+            ast.Module([function])
         )
 
 
